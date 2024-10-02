@@ -5,7 +5,9 @@ let globalObject = {
     city: '',
     state: '',
     orderTotal: ''
-} 
+}
+
+/* ---------------------------------------------------------------------------------------------------------------- */
 
 function setCustomerData(data){
     document.getElementById('fname').value = data.first_name || "";
