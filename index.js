@@ -157,8 +157,7 @@ function setOrderData(data) {
 
             <div class="">
                 <span class="">Image Name</span><br>
-                <input type="text" name="image_name_${index + 1}" id="image_name"
-                value="${['.JPG', '.PNG', '.JPEG', '.png', '.jpg', '.jpeg'].some(ext => item.image_name.includes(ext)) ? item.image_name.trim() : ''}"
+                <textarea name="image_name_${index + 1}" id="image_name" class="form-control" rows="3" required>${item.image_name ? item.image_name.trim() : ""}</textarea>
                 class="form-control" required>
             </div>
         `
@@ -212,7 +211,7 @@ async function getOrderData(event) {
 
     } catch (error) {
         alert(`An error occured: ${error}.`);
-        formReset();    
+        formReset();
     }
 }
 
@@ -269,7 +268,7 @@ function previousOrderPage(event) {
 /* -------------------------------------------------------------------------------------------------------------- */
 
 
-function formReset(){
+function formReset() {
     const form = document.forms['sales_form'];
 
     document.getElementById('customer_details').classList.add('hidden');
