@@ -52,8 +52,10 @@ function main(rawData) {
 
   if(data.payment_method == "stripe"){
     body.replaceText("{{Status}}", "Paid");
+    body.replaceText("{{Status_Description}}", "Thank you for completing the payment process.")
   } else if(data.payment_method == "partial.ly"){
     body.replaceText("{{Status}}", "Open");
+    body.replaceText("{{Status_Description}}","To check your current payment plan balance, please visit partial.ly/customer.")
   }else{
     body.replaceText("{{Status}}", "None");
   }

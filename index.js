@@ -158,7 +158,6 @@ function setOrderData(data) {
             <div class="">
                 <span class="">Image Name</span><br>
                 <textarea name="image_name_${index + 1}" id="image_name" class="form-control" rows="3" required>${item.image_name ? item.image_name.trim() : ""}</textarea>
-                class="form-control" required>
             </div>
         `
         order_items.appendChild(element);
@@ -211,7 +210,7 @@ async function getOrderData(event) {
 
     } catch (error) {
         alert(`An error occured: ${error}.`);
-        formReset();
+        formReset();    
     }
 }
 
@@ -268,7 +267,7 @@ function previousOrderPage(event) {
 /* -------------------------------------------------------------------------------------------------------------- */
 
 
-function formReset() {
+function formReset(){
     const form = document.forms['sales_form'];
 
     document.getElementById('customer_details').classList.add('hidden');
@@ -281,7 +280,7 @@ function formReset() {
     form.reset();
 }
 
-async function handleFormSubmit(event) {
+async function handleSalesFormSubmit(event) {
     event.preventDefault();
 
     const form = document.forms['sales_form'];
@@ -301,6 +300,7 @@ async function handleFormSubmit(event) {
         }
         console.log(await response.json());
         alert('Form submitted successfully.')
+        generateAcknowledgementLink()
         formReset();
     }
     catch (error) {
@@ -331,3 +331,54 @@ function isFieldsetFilled(fieldsetId) {
     return allFilled;
 }
 
+/* ---------------------------------------------------------------------------------------------------------------------------- */
+
+function generateAcknowledgementLink() {
+
+    const url = new URL('http://127.0.0.1:3000/acknowledgement.html');
+    url.searchParams.append('fname', globalObject.fname);
+    url.searchParams.append('lname', globalObject.lname);
+    url.searchParams.append('address', globalObject.address);
+    url.searchParams.append('city', globalObject.city);
+    url.searchParams.append('state', globalObject.state);
+    url.searchParams.append('total', globalObject.orderTotal);
+
+    // Show link or redirect user to acknowledgment page
+    window.location.href = url.href;
+    // alert(url.href);
+}
+
+function getParams(){
+    const params = new URLSearchParams(window.location.search);
+    return params;
+}
+
+function addParams() {
+    const params = getParams();
+    const fname = params.get('fname');
+    const lname = params.get('lname');
+    document.getElementById('customer-name').innerText = fname + " " + lname;
+}
+
+if (window.location.pathname.includes('acknowledgement.html')) {
+    window.onload = addParams;
+}
+
+function handleAcknowledgementFormSubmit(event) {
+    event.preventDefault();
+
+    const params = getParams();
+
+    const metadata = {
+        fname : params.get('fname'),
+        lname : params.get('lname'),
+        address : params.get('address'),
+        city : params.get('city'),
+        state : params.get('state'),
+        total : params.get('total')
+    };
+
+    alert('Acknowledged successfully!');
+    const url = new URL('http://127.0.0.1:3000/index.html'); 
+    window.location.href = url.href;
+}   
