@@ -1,28 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Acknowledgement</title>
-    <link rel="stylesheet" href="./style.css">
-</head>
-<body>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./style.css" />
+
+    <!-- Custom JS -->
+    <!-- <script src="https://js.stripe.com/v3/"></script> -->
+  </head>
+  <body>
     <main class="container">
-        <form class="form-box" name="acknowledgement-form" onsubmit="handleAcknowledgementFormSubmit(event)">
-            <h1>
-                Order Acknowledgement
-            </h1>
-            <p>
-                I authorize Bluebird Portraits to immediately commence work on the products ordered. Once the order is finalized, there are immediate costs associated with the order including credit card processing fees, artist retouching, printing etc. Therefore, I understand that this is a custom order and cannot be changed or canceled. Orders will be put into production immediately and may take between 3-8 weeks to complete.
-            </p>
-            <div>
-                <input type="checkbox" id="acknowledgement">
-                <label for="acknowledgement" id="customer-name"></label>
-            </div>
-            <button type="submit">Submit</button>
-        </form>
+      <form
+        class="form-box"
+        name="acknowledgement-form"
+        onsubmit="handleAcknowledgementFormSubmit(event)"
+      >
+        <h1>Order Acknowledgement</h1>
+        <p>
+          I authorize Bluebird Portraits to immediately commence work on the
+          products ordered. Once the order is finalized, there are immediate
+          costs associated with the order including credit card processing fees,
+          artist retouching, printing etc. Therefore, I understand that this is
+          a custom order and cannot be changed or canceled. Orders will be put
+          into production immediately and may take between 3-8 weeks to
+          complete.
+        </p>
+        <div class="">
+          <input type="checkbox" id="acknowledgement" required />
+          <label for="acknowledgement" id="customer-name"></label>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
     </main>
 
+    <!-- Custom JS -->
     <script src="./index.js" defer></script>
-</body>
+  </body>
 </html>
