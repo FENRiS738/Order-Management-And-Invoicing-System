@@ -358,7 +358,7 @@ function isFieldsetFilled(fieldsetId) {
 /* ---------------------------------------------------------------------------------------------------------------------------- */
 
 function generateAcknowledgementLink() {
-  const url = new URL("http://127.0.0.1:3000/acknowledgement.html");
+  const url = new URL("https://fenris738.github.io/Sales-Manager/acknowledgement.html");
   url.searchParams.append("fname", globalObject.fname);
   url.searchParams.append("lname", globalObject.lname);
   url.searchParams.append("address", globalObject.address);
