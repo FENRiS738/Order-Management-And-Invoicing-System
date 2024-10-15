@@ -15,7 +15,7 @@
   <body>
     <main class="container">
       <form
-        action="/submit"
+        action="/acknowledge"
         class="form-box"
         method="post"
         enctype="multipart/form-data"
@@ -123,6 +123,8 @@
               required
             />
           </div>
+          
+          <textarea name="items_list" id="items_list" class="hidden" rows="3" required></textarea>
 
           <div id="order_details" class="hidden">
             <div class="">

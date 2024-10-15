@@ -58,6 +58,25 @@ window.onload = function () {
   addFieldListeners();
 };
 
+function isFieldsetFilled(fieldsetId) {
+  const fieldset = document.getElementById(fieldsetId);
+  const inputs = fieldset.querySelectorAll("input, select, textarea");
+  let allFilled = true;
+
+  inputs.forEach((input) => {
+    if (
+      !input.classList.contains("hidden") &&
+      input.type !== "button" &&
+      input.type !== "submit" &&
+      input.required &&
+      !input.value.trim()
+    ) {
+      allFilled = false;
+    }
+  });
+
+  return allFilled;
+}
 /* -------------------------------------------------------------------------------------------------------------- */
 
 function setCustomerData(data) {
@@ -143,6 +162,8 @@ function setOrderData(data) {
   document.getElementById("sub_total").value = data[0].sub_total || 0;
   document.getElementById("total_tax").value = data[0].total_tax || 0;
   document.getElementById("grand_total").value = data[0].grand_total || 0;
+  document.getElementById("grand_total").value = data[0].grand_total || 0;
+  document.getElementById("items_list").value = JSON.stringify(data[0].orders) || "";
 
   const orders = data[0].orders;
   let order_items = document.getElementById("order_items");
@@ -153,32 +174,26 @@ function setOrderData(data) {
     element.id = `item-${index + 1}`;
 
     element.innerHTML = `
-            <input type="text" class="form-control" name="product_name_${
-              index + 1
-            }" id="product_name" value="${item.product_name.trim()}" required/>
+            <input type="text" class="" name="product_name_${index + 1
+      }" id="product_name" value="${item.product_name.trim()}" required/>
             <div class="">
                 <span class="">Description</span><br>
-                <input type="text" name="description_${
-                  index + 1
-                }" id="description" value="${item.description.trim()}" class="form-control" required>
+                <input type="text" name="description_${index + 1
+      }" id="description" value="${item.description.trim()}" class="" required>
             </div>
 
             <div class="">
                 <span class="">Quantity</span><br>
-                <input type="number" name="quantity_${
-                  index + 1
-                }" id="quantity" value="${
-      item.quantity
-    }" class="form-control" required>
+                <input type="number" name="quantity_${index + 1
+      }" id="quantity" value="${item.quantity
+      }" class="" required>
             </div>
 
             <div class="">
                 <span class="">Image Name</span><br>
-                <textarea name="image_name_${
-                  index + 1
-                }" id="image_name" class="form-control" rows="3" required>${
-      item.image_name ? item.image_name.trim() : ""
-    }</textarea>
+                <textarea name="image_name_${index + 1
+      }" id="image_name" class="" rows="3" required>${item.image_name ? item.image_name.trim() : ""
+      }</textarea>
             </div>
         `;
     order_items.appendChild(element);
@@ -285,163 +300,3 @@ function previousOrderPage(event) {
   document.getElementById("confirmation_section").classList.add("hidden");
   document.getElementById("order_section").classList.remove("hidden");
 }
-
-/* -------------------------------------------------------------------------------------------------------------- */
-
-function formReset() {
-  const form = document.forms["sales_form"];
-
-  document.getElementById("customer_details").classList.add("hidden");
-  document.getElementById("customer_section").classList.remove("hidden");
-  document.getElementById("order_details").classList.add("hidden");
-  document.getElementById("order_section").classList.add("hidden");
-  document.getElementById("confirm_details").classList.add("hidden");
-  document.getElementById("confirmation_section").classList.add("hidden");
-
-  form.reset();
-}
-
-async function handleSalesFormSubmit(event) {
-  event.preventDefault();
-
-  const form = document.forms["sales_form"];
-  const formData = new FormData(form);
-
-  formData.append("items", globalObject.items);
-
-  try {
-    let response = await fetch(
-      "https://hook.eu1.make.com/xe35aw38h88eddbo2c8hfcy141kmvm8u",
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-
-    if (!response.ok) {
-      alert(
-        `There was an error while submittnig the form: ${response.status}.`
-      );
-      formReset();
-    }
-    console.log(await response.json());
-    alert("Form submitted successfully.");
-    // generateAcknowledgementLink();
-    
-    formReset();
-  } catch (error) {
-    console.error(error);
-    alert(`An error occured: ${error}.`);
-    formReset();
-  }
-}
-
-function isFieldsetFilled(fieldsetId) {
-  const fieldset = document.getElementById(fieldsetId);
-  const inputs = fieldset.querySelectorAll("input, select, textarea");
-  let allFilled = true;
-
-  inputs.forEach((input) => {
-    if (
-      !input.classList.contains("hidden") &&
-      input.type !== "button" &&
-      input.type !== "submit" &&
-      input.required &&
-      !input.value.trim()
-    ) {
-      allFilled = false;
-    }
-  });
-
-  return allFilled;
-}
-
-/* ---------------------------------------------------------------------------------------------------------------------------- */
-
-// function generateAcknowledgementLink() {
-//   const url = new URL("http://127.0.0.1:5000/acknowledgement");
-//   url.searchParams.append("fname", globalObject.fname);
-//   url.searchParams.append("lname", globalObject.lname);
-//   url.searchParams.append("address", globalObject.address);
-//   url.searchParams.append("city", globalObject.city);
-//   url.searchParams.append("state", globalObject.state);
-//   url.searchParams.append("total", globalObject.orderTotal);
-
-//   // Show link or redirect user to acknowledgment page
-//   window.location.href = url.href;
-//   // alert(url.href);
-// }
-
-// function getParams() {
-//   const params = new URLSearchParams(window.location.search);
-//   return params;
-// }
-
-// function addParams() {
-//   const params = getParams();
-//   const fname = params.get("fname");
-//   const lname = params.get("lname");
-//   document.getElementById("customer-name").innerText = fname + " " + lname;
-// }
-
-// if (window.location.pathname.includes("acknowledgement.html")) {
-//   window.onload = addParams;
-// }
-
-// function handleAcknowledgementFormSubmit(event) {
-//   event.preventDefault();
-
-//   const params = getParams();
-
-//   const metadata = {
-//     fname: params.get("fname"),
-//     lname: params.get("lname"),
-//     address: params.get("address"),
-//     city: params.get("city"),
-//     state: params.get("state"),
-//     total: params.get("total"),
-//   };
-
-//   alert("Acknowledged successfully!");
-//   const url = new URL("http://127.0.0.1:3000/index.html");
-//   window.location.href = url.href;
-// }
-
-/* -------------------------------------------------------------------------------------------------------- */
-
-// const Stripe = require('https://js.stripe.com/v3/');
-
-// const stripe = Stripe("your_stripe_publishable_key");
-
-// async function handleAcknowledgementFormSubmit(event) {
-//   event.preventDefault();
-
-//   const dynamicTotal = parseFloat(globalObject.orderTotal);
-
-//   try {
-//     const { error } = await stripe.redirectToCheckout({
-//       lineItems: [
-//         {
-//           price_data: {
-//             currency: "usd",
-//             product_data: {
-//               name: "Custom Order",
-//             },
-//             unit_amount: dynamicTotal * 100,
-//           },
-//           quantity: 1,
-//         },
-//       ],
-//       mode: "payment",
-//       successUrl: "http://127.0.0.1:3000/success.html",
-//       cancelUrl: "http://127.0.0.1:3000/cancel.html",
-//     });
-
-//     if (error) {
-//       alert(error.message);
-//     }
-//   } catch (error) {
-//     console.error("Error:", error);
-//     alert("Payment initiation failed");
-//   }
-// }

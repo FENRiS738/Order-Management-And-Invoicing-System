@@ -8,15 +8,14 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/static/style.css" />
 
-    <!-- Custom JS -->
-    <!-- <script src="https://js.stripe.com/v3/"></script> -->
   </head>
   <body>
     <main class="container">
       <form
         class="form-box"
         name="acknowledgement-form"
-        onsubmit="handleAcknowledgementFormSubmit(event)"
+        action="/checkout"
+        method="post"
       >
         <h1>Order Acknowledgement</h1>
         <p>
@@ -29,8 +28,16 @@
           complete.
         </p>
         <div class="">
-          <input type="checkbox" id="acknowledgement" required />
-          <label for="acknowledgement" id="customer-name"></label>
+          <input type="checkbox" name="acknowledged" id="acknowledged" required />
+          <label for="acknowledgement" id="customer-name"><%= fname %> <%= lname %></label>
+          <input type="text" class="hidden" name="album" id="album" value="<%= album %>" required>
+          <input type="text" class="hidden" name="fname" id="fname" value="<%= fname %>" required>
+          <input type="text" class="hidden" name="lname" id="lname" value="<%= lname %>" required>
+          <input type="text" class="hidden" name="address" id="address" value="<%= address %>" required>
+          <input type="text" class="hidden" name="city" id="city" value="<%= city %>" required>
+          <input type="text" class="hidden" name="state" id="state" value="<%= state %>" required>
+          <input type="text" class="hidden" name="grand_total" id="grand_total" value="<%= total %>" required>
+          <input type="text" class="hidden" name="payment" id="payment" value="<%= payment %>" required>
         </div>
         <button type="submit">Submit</button>
       </form>
