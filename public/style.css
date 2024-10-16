@@ -11,7 +11,7 @@ body {
   background: #f0f0f0;
 }
 
-header{
+header {
   width: 100%;
   background-color: rgb(0, 118, 214);
   position: fixed;
@@ -19,7 +19,7 @@ header{
   padding: 1.5rem;
 }
 
-header a{
+header a {
   text-decoration: none;
   color: #f0f0f0;
   font-weight: 700;
@@ -28,7 +28,7 @@ header a{
   border-radius: 5px;
 }
 
-header a:hover{
+header a:hover {
   border: 1px solid #f0f0f0;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
@@ -52,13 +52,13 @@ label{
 select,
 input,
 button,
-textarea{
+textarea {
   padding: 0.25rem;
   border: 1px solid #adadad;
   border-radius: 0.2rem;
 }
 
-button{
+button {
   cursor: pointer;
 }
 
@@ -72,7 +72,7 @@ button{
   display: none;
 }
 
-input[type="checkbox"]{
+input[type="checkbox"] {
   display: inline;
 }
 
@@ -82,4 +82,50 @@ input[type="checkbox"]{
   border-radius: 10px;
   padding: 1rem;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  display: flex;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: min(500px, 90%);
+  padding: 1rem;
+  position: relative;
+}
+
+
+.close-btn {
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  margin: 0;
+  padding: 0.35rem;
+  border: 0;
+  border-radius: 0;
+  height: max-content;
+  width: max-content;
+  background: transparent;
+  font-size: larger;
+}
+
+.close-btn:hover {
+  color: red;
 }

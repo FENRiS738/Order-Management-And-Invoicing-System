@@ -77,6 +77,15 @@ function isFieldsetFilled(fieldsetId) {
 
   return allFilled;
 }
+
+
+const closeModalButton = document.getElementById('closeModal');
+if (closeModalButton) {
+  closeModalButton.onclick = function () {
+    document.getElementById('errorModal').style.display = 'none';
+    window.location.href = '/';
+  };
+}
 /* -------------------------------------------------------------------------------------------------------------- */
 
 function setCustomerData(data) {
