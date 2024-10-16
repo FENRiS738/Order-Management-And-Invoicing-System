@@ -28,7 +28,7 @@ app.get("/", (req, res) => res.render("index", { error: null }));
 app.post("/acknowledge", async (req, res) => {
   try {
     const formData = req.body;
-    const listItems = JSON.parse(formData["items"]);
+    const listItems = JSON.parse(formData["items_list"]);
     const items = getItems(listItems, formData);
     formData["items_list"] = JSON.stringify(items);
     await formSubmit(formData);
