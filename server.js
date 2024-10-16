@@ -67,16 +67,12 @@ app.post("/checkout", async (req, res) => {
 });
 
 app.get("/success", (req, res) => {
-  res.send({
-    data: "Success"
-  });
+  res.render("success");
 });
 
 
-app.get("/success", (req, res) => {
-  res.send({
-    data: "Cancelled"
-  });
+app.get("/cancel", (req, res) => {
+  res.render("cancel");
 });
 
 app.listen(PORT, () => {

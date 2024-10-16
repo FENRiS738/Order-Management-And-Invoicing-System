@@ -11,6 +11,28 @@ body {
   background: #f0f0f0;
 }
 
+header{
+  width: 100%;
+  background-color: rgb(0, 118, 214);
+  position: fixed;
+  top: 0;
+  padding: 1.5rem;
+}
+
+header a{
+  text-decoration: none;
+  color: #f0f0f0;
+  font-weight: 700;
+  padding: 0.25rem 1rem;
+  transition: all 300ms ease-in-out;
+  border-radius: 5px;
+}
+
+header a:hover{
+  border: 1px solid #f0f0f0;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
 main {
   display: grid;
   place-items: center;
