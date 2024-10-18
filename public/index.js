@@ -309,3 +309,30 @@ function previousOrderPage(event) {
   document.getElementById("confirmation_section").classList.add("hidden");
   document.getElementById("order_section").classList.remove("hidden");
 }
+
+/* ------------------------------------------------------------------------------------------------------------ */
+
+function copyUrl(event) {
+  event.preventDefault();
+  let payment_link = document.getElementById("url-to-copy");
+  payment_link.select();
+  payment_link.setSelectionRange(0, 99999);
+
+  navigator.clipboard.writeText(payment_link.value).then(() => {
+    document.getElementById('success-msg').style.display = "flex";
+    document.getElementById('copyFeedback').innerText = 'URL copied to clipboard!';
+  }).catch(err => {
+    document.getElementById('error-msg').style.display = "flex";
+    document.getElementById('copyFeedback').innerText = 'Failed to copy URL to clipboard!';
+  })
+}
+
+function closeSuccessMsg(event) {
+  event.preventDefault();
+  document.getElementById('success-msg').style.display = "none";
+}
+
+function closeErrorMsg(event) {
+  event.preventDefault();
+  document.getElementById('error-msg').style.display = "none";
+}
