@@ -1,5 +1,5 @@
-import DIRECTORS from "../data/directors.js";
-import { director_template } from "./index.js";
+import DIRECTORS from "../../data/directors.js";
+import { director_template } from "../index.js";
 
 const directors_list_template = () => /*html*/ `
     <select class="form-select" name="director" required>

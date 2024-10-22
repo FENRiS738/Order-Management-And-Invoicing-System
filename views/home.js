@@ -27,10 +27,9 @@ const home = (data) => /*html*/ `
         </header>
         <main class="container">
             <div class="form-wrapper mt-5 pt-5 d-flex justify-content-center">
-                <form class="customer-form"
+                <form class="custom-form"
                         hx-on::after-request="document.querySelector('form').reset()"
-                        hx-post="/customers/submit"
-                        hx-target=".customer-form" 
+                        hx-post="/customers/submit" 
                         hx-swap="outerHTML">
                     <div class="mb-3">
                         ${directors_list_template()}
