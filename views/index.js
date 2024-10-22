@@ -6,6 +6,17 @@ import home from './home.js';
 import location_template from './customer/location.js';
 import locations_list_template from './customer/locations_list.js';
 import order_form_template from './order/order_form.js';
+import error_template from './error.js';
 
 
-export { home, director_template, directors_list_template, location_template, locations_list_template, date_template, customer_template, order_form_template };
+export { 
+    home, 
+    director_template, 
+    directors_list_template, 
+    location_template, 
+    locations_list_template, 
+    date_template, 
+    customer_template, 
+    order_form_template,
+    error_template 
+};

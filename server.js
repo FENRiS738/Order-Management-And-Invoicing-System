@@ -2,11 +2,12 @@ import express from "express";
 import path from "path";
 import fileUpload from "express-fileupload";
 import dotenv from 'dotenv';
+import session from 'express-session';
 
 
 // import { getItems, formSubmit, generateToken, verifyToken } from "./utils.js";
 // import { stripeCheckout, partiallyCheckout } from "./payment.js";
-import { customer_router } from './routes/index.js';
+import { customer_router, order_router } from './routes/index.js';
 import { home } from './views/index.js';
 
 dotenv.config();
@@ -20,7 +21,16 @@ app.use(fileUpload());
 app.use("/static", express.static("public"));
 app.set("view engine", "ejs");
 
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
+
+
 app.use('/customers', customer_router);
+app.use('/orders', order_router);
 
 app.get("/", (req, res) => {
   let error = req.query["error"];
