@@ -44,6 +44,21 @@
     </main>
 
     <!-- Custom JS -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Automatically download the PDF invoice
+        const pdfUrl = "<%- invoice %>";
+        if (pdfUrl) {
+          // Create an invisible link and trigger click to download
+          const link = document.createElement("a");
+          link.href = pdfUrl;
+          link.download = "invoice.pdf";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      });
+    </script>
     <script src="/static/index.js" defer></script>
   </body>
 </html>

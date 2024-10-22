@@ -12,6 +12,7 @@ const generateToken = (formData) => {
       locaiton: formData["location"],
       grand_total: formData["grand_total"],
       payment: formData["payment"],
+      invoice: formData["invoice"],
     };
     const secretKey = process.env.JWT_SECRET;
     const token = jwt.sign(data, secretKey);
@@ -22,7 +23,7 @@ const generateToken = (formData) => {
 };
 
 const verifyToken = (token) => {
-  try{
+  try {
     const secretKey = process.env.JWT_SECRET;
     const data = jwt.verify(token, secretKey);
     return data;
@@ -49,7 +50,12 @@ const formSubmit = async (formData) => {
       "https://hook.eu1.make.com/xe35aw38h88eddbo2c8hfcy141kmvm8u",
       formData
     );
-    return response;
+
+    if (!response.data.pdf_url) {
+      throw new Error("Unable to create invoice.");
+    }
+
+    return response.data.pdf_url;
   } catch (error) {
     throw new Error(`Failed to submit form. Please try again later:\n${error}`);
   }

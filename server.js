@@ -46,13 +46,15 @@ app.post("/acknowledge", async (req, res) => {
     const listItems = JSON.parse(formData["items_list"]);
     const items = getItems(listItems, formData);
     formData["items_list"] = JSON.stringify(items);
-
-    await formSubmit(formData);
+    const pdf_url = await formSubmit(formData);
+    formData["invoice"] = pdf_url;
 
     let token = generateToken(formData);
-    const fullUrl = `${req.protocol}://${req.get('host')}/acknowledge?token=${encodeURIComponent(token)}`;
+    const fullUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/acknowledge?token=${encodeURIComponent(token)}`;
 
-    res.render("url", { url: fullUrl });
+    res.render("url", { url: fullUrl, invoice: pdf_url });
   } catch (error) {
     res.redirect(`/?error=${encodeURIComponent(error.message)}`);
   }
@@ -61,7 +63,7 @@ app.post("/acknowledge", async (req, res) => {
 app.get("/acknowledge", (req, res) => {
   const { token } = req.query;
 
-  const { album, fname, lname, art_director, locaiton, grand_total, payment } =
+  const { album, fname, lname, art_director, locaiton, grand_total, payment, invoice } =
     verifyToken(token);
   res.render("acknowledge", {
     album,
@@ -71,6 +73,7 @@ app.get("/acknowledge", (req, res) => {
     locaiton,
     grand_total,
     payment,
+    invoice
   });
 });
 
