@@ -3,16 +3,21 @@
 *,
 *::after,
 *::before {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  margin: 0;
-  padding: 0;
   background: #f0f0f0;
 }
 
+.customer-form{
+  width: min(400px, 100%);
+}
+
+/*
 header {
   width: 100%;
   background-color: rgb(0, 118, 214);
@@ -181,4 +186,4 @@ input[type="checkbox"] {
   border-left: 0;
   border-right: 0;
   border-bottom: 1px solid black;
-}
+} */
