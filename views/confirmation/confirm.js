@@ -80,6 +80,12 @@ const confirm_template = (data) => /*html*/`
             value="${data.payment_method}"
             readonly
         >
+        <textarea 
+            name="items"
+            class="form-control mb-1" 
+            hidden
+            readonly
+        >${data.items}"</textarea>
     </div>
 `;
 

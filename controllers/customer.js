@@ -46,7 +46,7 @@ const saveCustomerData = async (req, res) => {
 
     await saveCustomer(customerData);
     req.session["customer"] = customerData;
-    
+
     res.send(order_form_template());
   } catch (error) {
     res.send(error_template(error));

@@ -1,7 +1,7 @@
 const confirm_form_template = () => /*html*/ `
     <form class="custom-form"
             hx-on::after-request="document.querySelector('form').reset()"
-            hx-post="/confirm"
+            hx-post="/confirm/submit"
             hx-swap="outerHTML"
     >
         <div class="mb-3">

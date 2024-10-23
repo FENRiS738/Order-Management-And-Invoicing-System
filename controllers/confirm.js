@@ -1,10 +1,16 @@
+import axios from "axios";
+import dotenv from 'dotenv';
 import { confirm_template, error_template } from "../views/index.js";
+
+dotenv.config();
+
+const GENERATE_DOCUMENT_API = process.env.GENERATE_DOCUMENT_API;
 
 const getConfirmData = (req, res) => {
   try {
     const { payment_method } = req.body;
     const { fname, lname, date, address, city, state } = req.session.customer;
-    const { album, sub_total, tax, grand_total } = req.session.order;
+    const { album, sub_total, tax, grand_total, items } = req.session.order;
     const combined_fields = {
       fname,
       lname,
@@ -13,10 +19,11 @@ const getConfirmData = (req, res) => {
       city,
       state,
       album,
+      items,
       sub_total,
       tax,
       grand_total,
-      payment_method,
+      payment_method
     };
 
     res.send(confirm_template(combined_fields));
@@ -25,4 +32,24 @@ const getConfirmData = (req, res) => {
   }
 };
 
-export { getConfirmData };
+const generateDocument = async (confirm_data) => {
+  const response  = await axios.get(GENERATE_DOCUMENT_API, {
+    params: {
+      confirm_data
+    }
+  });
+
+  console.log(response.data);
+};
+
+const processConfirmData = (req, res) => {
+  try {
+    const confirm_data = req.body;
+    generateDocument(confirm_data);
+    res.send("Accepted")
+  } catch (error) {
+    res.send(error_template(error))
+  }
+};
+
+export { getConfirmData, processConfirmData };
