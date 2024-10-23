@@ -8,13 +8,17 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   background: #f0f0f0;
 }
 
-.custom-form{
-  width: min(400px, 100%);
+.custom-form {
+  width: minmax(400px, 100%);
 }
 
 /*

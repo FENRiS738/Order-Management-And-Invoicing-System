@@ -10,7 +10,9 @@ const order_form_template = () => /*html*/ `
                 name="xml_file"
                 hx-post="/orders"
                 hx-encoding="multipart/form-data"
-                hx-trigger="changed"
+                hx-trigger="change"
+                hx-target="closest div"
+                hx-swap="outerHTML"
                 class="form-control me-2"
                 accept=".xml"
                 required

@@ -7,6 +7,9 @@ import location_template from './customer/location.js';
 import locations_list_template from './customer/locations_list.js';
 import order_form_template from './order/order_form.js';
 import error_template from './error.js';
+import order_template from './order/order.js';
+import item_template from './order/item.js';
+
 
 
 export { 
@@ -18,5 +21,7 @@ export {
     date_template, 
     customer_template, 
     order_form_template,
-    error_template 
+    error_template,
+    order_template,
+    item_template
 };

@@ -20,13 +20,13 @@ const home = (data) => /*html*/ `
         <title>Invoicer</title>
     </head>
     <body>
-        <header class="container-fluid p-0">
+        <!-- <header class="container-fluid p-0">
             <nav class="navbar navbar-expand-sm px-3 navbar-light bg-white">
-                <a class="navbar-brand fw-semibold fs-3 " href="/">Home</a>
+                <a class="navbar-brand fw-semibold fs-3" href="/">Home</a>
             </nav>
-        </header>
-        <main class="container min-vh-100">
-            <div class="form-wrapper mt-5 pt-5 d-flex justify-content-center">
+        </header> -->
+        <main class="container">
+            <div class="form-wrapper p-5">
                 <form class="custom-form"
                         hx-on::after-request="document.querySelector('form').reset()"
                         hx-post="/customers/submit" 
