@@ -29,9 +29,7 @@ const item_template = (item, index) => /*html*/`
             class="form-control mb-1" 
             rows="3" 
             required
-        >
-        ${item.images.trim()}
-        </textarea>
+        >${item.images}</textarea>
     </div>
 `;
 

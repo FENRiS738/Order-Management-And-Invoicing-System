@@ -1,9 +1,15 @@
 import axios from "axios";
 import dotenv from "dotenv";
 import { XMLParser } from "fast-xml-parser";
-import { error_template, order_template } from "../views/index.js";
+import {
+  confirm_form_template,
+  error_template,
+  order_template,
+} from "../views/index.js";
 
 dotenv.config();
+
+const SAVE_ORDER_API = process.env.SAVE_ORDER_API;
 
 const parseXML = (xml_data) => {
   const parser = new XMLParser();
@@ -14,14 +20,16 @@ const parseXML = (xml_data) => {
 const formatImageNames = (images_list) => {
   let images;
   if (Array.isArray(images_list.Image_Name)) {
-    images = images_list["Image_Name"].join(", ");
+    images = images_list.Image_Name.map((image) =>
+      image.replace(/\s+/g, " ").trim()
+    ).join(", ");
   } else if (
     typeof images_list.Image_Name === "string" &&
-    images_list.Image_Name.length > 0
+    images_list.Image_Name.trim() !== ""
   ) {
-    images = images_list.Image_Name;
+    images = images_list.Image_Name.replace(/\s+/g, " ").trim();
   } else {
-    images = "No images";
+    images = "Enter Image Name";
   }
   return images;
 };
@@ -83,7 +91,6 @@ const extractData = (order_client) => {
 const getOrders = (xml_file) => {
   const order_obj = parseXML(xml_file.data);
   const order = extractData(order_obj["Client"]);
-  console.log(order);
   return order;
 };
 
@@ -98,10 +105,56 @@ const getOrdersData = async (req, res) => {
     }
 
     const order = getOrders(xml_file);
+    req.session["items_count"] = order.abstract_order_items.length;
     res.send(order_template(order));
   } catch (error) {
     res.send(error_template(error));
   }
 };
 
-export { getOrdersData };
+const updatedItemsString = (items_count, orderData) => {
+  let updated_items_string = [];
+  for (let i = 1; i <= items_count; i++) {
+    let item = {
+      product: orderData[`product_${i}`],
+      description: orderData[`description_${i}`],
+      quantity: orderData[`quantity_${i}`],
+      image_name: orderData[`image_name_${i}`],
+    };
+    updated_items_string.push(item);
+  }
+  return JSON.stringify(updated_items_string);
+};
+
+const saveOrder = async (orderData, id, date) => {
+  const response = await axios.post(SAVE_ORDER_API, { orderData, id, date });
+  return response.data.order_id;
+};
+
+const saveOrdersData = async (req, res) => {
+  try {
+    const orderData = req.body;
+    const { id, date } = req.session.customer;
+
+    const order_id = await saveOrder(orderData, id, date);
+
+    if (order_id === undefined || order_id === null) {
+      return res.send(error_template({ message: "Order not saved." }));
+    }
+
+    const updated_items_string = updatedItemsString(
+      req.session.items_count,
+      orderData
+    );
+
+    orderData["id"] = order_id;
+    orderData["items"] = updated_items_string;
+    req.session["order"] = orderData;
+
+    res.send(confirm_form_template());
+  } catch (error) {
+    res.send(error_template(error));
+  }
+};
+
+export { getOrdersData, saveOrdersData };

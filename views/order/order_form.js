@@ -4,7 +4,7 @@ const order_form_template = () => /*html*/ `
             hx-post="/orders/submit"
             hx-swap="outerHTML"
     >
-        <div class="mb-3 d-flex">
+        <div class="mb-3">
             <input
                 type="file"
                 name="xml_file"

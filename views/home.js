@@ -37,13 +37,13 @@ const home = (data) => /*html*/ `
                     <div class="mb-3">
                         ${locations_list_template()}
                     </div>
-                    <div class="mb-3 d-flex">
+                    <div class="mb-3">
                         <input
                             type="text"
                             name="customer_id"
                             id="customer_id"
                             placeholder="Enter Customer ID"
-                            class="form-control me-2"
+                            class="form-control mb-2"
                             required
                         />
                         <button 

@@ -9,6 +9,8 @@ import order_form_template from './order/order_form.js';
 import error_template from './error.js';
 import order_template from './order/order.js';
 import item_template from './order/item.js';
+import confirm_form_template from './confirmation/confirm_form.js';
+import confirm_template from './confirmation/confirm.js';
 
 
 
@@ -23,5 +25,7 @@ export {
     order_form_template,
     error_template,
     order_template,
-    item_template
+    item_template,
+    confirm_form_template,
+    confirm_template
 };
