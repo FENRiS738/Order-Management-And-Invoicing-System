@@ -29,7 +29,7 @@ const formatImageNames = (images_list) => {
   ) {
     images = images_list.Image_Name.replace(/\s+/g, " ").trim();
   } else {
-    images = "Enter Image Name";
+    images = "";
   }
   return images;
 };

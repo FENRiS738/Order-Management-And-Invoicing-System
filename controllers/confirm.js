@@ -94,7 +94,7 @@ const processConfirmData = async (req, res) => {
     const fullUrl = `${req.protocol}://${req.get(
       "host"
     )}/acknowledge?token=${encodeURIComponent(token)}`;
-    res.send(url_template(fullUrl));
+    res.send(url_template(fullUrl, doc_response.view_url));
   } catch (error) {
     res.send(error_template(error));
   }

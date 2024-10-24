@@ -1,8 +1,6 @@
-function copyUrl(event) {
-  event.preventDefault();
+function copyUrl() {
 
   let payment_link = document.getElementById("copy-text");
-
   let range = document.createRange();
   range.selectNode(payment_link);
   
