@@ -20,11 +20,9 @@ const home = (data) => /*html*/ `
         <title>Invoicer</title>
     </head>
     <body>
-        <!-- <header class="container-fluid p-0">
-            <nav class="navbar navbar-expand-sm px-3 navbar-light bg-white">
+        <header class="container-fluid p-3">
                 <a class="navbar-brand fw-semibold fs-3" href="/">Home</a>
-            </nav>
-        </header> -->
+        </header>
         <main class="container">
             <div class="form-wrapper p-5">
                 <form class="custom-form"
