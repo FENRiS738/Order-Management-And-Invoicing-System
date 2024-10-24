@@ -1,15 +1,23 @@
 import axios from "axios";
 import dotenv from "dotenv";
-import { acknowledge_template, confirm_template, error_template } from "../views/index.js";
+import jwt from "jsonwebtoken";
+
+import {
+  confirm_template,
+  error_template,
+  url_template,
+} from "../views/index.js";
 
 dotenv.config();
 
 const GENERATE_DOCUMENT_API = process.env.GENERATE_DOCUMENT_API;
+const SAVE_ORDER_API = process.env.SAVE_ORDER_API;
 
 const getConfirmData = (req, res) => {
   try {
     const { payment_method } = req.body;
-    const { fname, lname, date, address, city, state, director, location } = req.session.customer;
+    const { fname, lname, date, address, city, state, director, location } =
+      req.session.customer;
     const { album, sub_total, tax, grand_total, items } = req.session.order;
     const combined_fields = {
       fname,
@@ -54,14 +62,39 @@ const generateDocument = async (confirm_data) => {
   return response.data;
 };
 
+const generateToken = (formData) => {
+  const { items, ...rest } = formData;
+  const secretKey = process.env.JWT_SECRET;
+  const token = jwt.sign(rest, secretKey);
+  return token;
+};
+
+const updateOrder = async (order_id, payment_method, pdf_url) => {
+  const response = await axios.post(SAVE_ORDER_API, { order_id, payment_method, pdf_url });
+  return response.data.order_id;
+};
+
 const processConfirmData = async (req, res) => {
   try {
     const confirm_data = req.body;
     const doc_response = await generateDocument(confirm_data);
-    if(!doc_response.success) {
-      return res.send(error_template({message: "Failed to create the Invoice. Please try again."}))
+
+    if (!doc_response.success) {
+      return res.send(
+        error_template({
+          message: "Failed to create the Invoice. Please try again.",
+        })
+      );
     }
-    res.send(acknowledge_template(confirm_data));
+
+    confirm_data["invoice"] = doc_response.pdf_url;
+    await updateOrder(req.session.order.id, confirm_data.payment_method, doc_response.pdf_url);
+    let token = generateToken(confirm_data);
+
+    const fullUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/acknowledge?token=${encodeURIComponent(token)}`;
+    res.send(url_template(fullUrl));
   } catch (error) {
     res.send(error_template(error));
   }

@@ -13,6 +13,7 @@ import confirm_form_template from './confirmation/confirm_form.js';
 import confirm_template from './confirmation/confirm.js';
 import acknowledge_template from './acknowledge/acknowledge.js';
 import acknowledge_field_template from './acknowledge/acknowledge_fields.js';
+import url_template from './url.js';
 
 export { 
     home, 
@@ -29,5 +30,6 @@ export {
     confirm_form_template,
     confirm_template,
     acknowledge_template,
-    acknowledge_field_template
+    acknowledge_field_template,
+    url_template
 };

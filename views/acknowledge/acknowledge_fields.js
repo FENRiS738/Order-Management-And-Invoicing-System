@@ -19,7 +19,7 @@ const acknowledge_field_template = (data) => /*html*/ `
     <input type="hidden" name="fname" value="${data.fname}" required>
     <input type="hidden" name="lname" value="${data.lname}" required>
     <input type="hidden" name="director" value="${data.director}" required>
-    <input type="hidden" name="locaiton" value="${data.locaiton}" required>
+    <input type="hidden" name="location" value="${data.location}" required>
     <input type="hidden" name="grand_total" value="${data.grand_total}" required>
     <input type="hidden" name="payment_method" value="${data.payment_method}" required>
 </div>  
