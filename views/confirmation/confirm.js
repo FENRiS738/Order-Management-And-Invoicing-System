@@ -15,6 +15,20 @@ const confirm_template = (data) => /*html*/`
             readonly
         >
         <input 
+            type="text" 
+            name="director" 
+            class="form-control mb-1"
+            value="${data.director}" 
+            readonly
+        >
+        <input 
+            type="text" 
+            name="location" 
+            class="form-control mb-1"
+            value="${data.location}" 
+            readonly
+        >
+        <input 
             type="date" 
             name="date" 
             class="form-control mb-1"
@@ -85,7 +99,7 @@ const confirm_template = (data) => /*html*/`
             class="form-control mb-1" 
             hidden
             readonly
-        >${data.items}"</textarea>
+        >${data.items}</textarea>
     </div>
 `;
 

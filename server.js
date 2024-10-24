@@ -7,7 +7,7 @@ import session from 'express-session';
 
 // import { getItems, formSubmit, generateToken, verifyToken } from "./utils.js";
 // import { stripeCheckout, partiallyCheckout } from "./payment.js";
-import { confirm_router, customer_router, order_router } from './routes/index.js';
+import { confirm_router, customer_router, order_router, acknowledge_router } from './routes/index.js';
 import { home } from './views/index.js';
 
 dotenv.config();
@@ -32,6 +32,7 @@ app.use(session({
 app.use('/customers', customer_router);
 app.use('/orders', order_router);
 app.use('/confirm', confirm_router);
+app.use('/acknowledge', acknowledge_router);
 
 app.get("/", (req, res) => {
   let error = req.query["error"];

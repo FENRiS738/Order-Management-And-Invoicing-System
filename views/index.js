@@ -11,8 +11,8 @@ import order_template from './order/order.js';
 import item_template from './order/item.js';
 import confirm_form_template from './confirmation/confirm_form.js';
 import confirm_template from './confirmation/confirm.js';
-
-
+import acknowledge_template from './acknowledge/acknowledge.js';
+import acknowledge_field_template from './acknowledge/acknowledge_fields.js';
 
 export { 
     home, 
@@ -27,5 +27,7 @@ export {
     order_template,
     item_template,
     confirm_form_template,
-    confirm_template
+    confirm_template,
+    acknowledge_template,
+    acknowledge_field_template
 };
