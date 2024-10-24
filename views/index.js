@@ -14,6 +14,8 @@ import confirm_template from './confirmation/confirm.js';
 import acknowledge_template from './acknowledge/acknowledge.js';
 import acknowledge_field_template from './acknowledge/acknowledge_fields.js';
 import url_template from './url.js';
+import success_template from './success.js';
+import cancel_template from './cancel.js';
 
 export { 
     home, 
@@ -31,5 +33,7 @@ export {
     confirm_template,
     acknowledge_template,
     acknowledge_field_template,
-    url_template
+    url_template,
+    success_template,
+    cancel_template
 };
