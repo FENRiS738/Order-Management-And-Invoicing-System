@@ -4,7 +4,7 @@ import {
   date_template,
 } from "./index.js";
 
-const home = (data) => /*html*/ `
+const home = (directors, locations) => /*html*/ `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -20,7 +20,7 @@ const home = (data) => /*html*/ `
         <title>Invoicer</title>
     </head>
     <body>
-        <header class="container-fluid p-3">
+        <header class="container-fluid p-3 bg-white shadow-sm">
                 <a class="navbar-brand fw-semibold fs-3" href="/">Home</a>
         </header>
         <main class="container">
@@ -30,10 +30,10 @@ const home = (data) => /*html*/ `
                         hx-post="/customers/submit" 
                         hx-swap="outerHTML">
                     <div class="mb-3">
-                        ${directors_list_template()}
+                        ${directors_list_template(directors)}
                     </div>
                     <div class="mb-3">
-                        ${locations_list_template()}
+                        ${locations_list_template(locations)}
                     </div>
                     <div class="mb-3">
                         <input

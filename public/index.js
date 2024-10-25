@@ -18,3 +18,14 @@ function copyUrl() {
 
   window.getSelection().removeAllRanges();
 }
+
+function setTarget() {
+  const form = document.forms['admin-form'];
+  const selectedValue = document.getElementById("type").value;
+  console.log(selectedValue);
+  if (selectedValue === "directors") {
+      form.setAttribute("hx-target", ".directors-list");
+  } else if (selectedValue === "locations") {
+      form.setAttribute("hx-target", ".locations-list");
+  }
+}

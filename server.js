@@ -1,5 +1,7 @@
 import express from "express";
 import fileUpload from "express-fileupload";
+import fs from 'fs/promises';
+import path from 'path';
 import dotenv from "dotenv";
 import session from "express-session";
 
@@ -8,8 +10,9 @@ import {
   customer_router,
   order_router,
   acknowledge_router,
+  admin_router,
 } from "./routes/index.js";
-import { cancel_template, home, success_template } from "./views/index.js";
+import { cancel_template, home, success_template, admin_template } from "./views/index.js";
 
 dotenv.config();
 
@@ -35,15 +38,15 @@ app.use("/customers", customer_router);
 app.use("/orders", order_router);
 app.use("/confirm", confirm_router);
 app.use("/acknowledge", acknowledge_router);
+app.use("/admin", admin_router);
 
-app.get("/", (req, res) => {
-  let error = req.query["error"];
-  let data = { error: null };
-  if (error !== undefined) {
-    data["error"] = error;
-  }
-  res.send(home(data));
+
+app.get("/", async (req, res) => {
+  const directors = JSON.parse(await fs.readFile(path.join('data', 'directors.json'), 'utf-8'));
+  const locations = JSON.parse(await fs.readFile(path.join('data', 'locations.json'), 'utf-8'));
+  res.send(home(directors, locations));
 });
+
 
 app.get("/success", (req, res) => res.send(success_template()));
 app.get("/cancel", (req, res) => res.send(cancel_template()));

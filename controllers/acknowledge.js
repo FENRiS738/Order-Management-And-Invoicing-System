@@ -46,7 +46,6 @@ const partiallyCheckout = (director_name, location, amount) => {
 
 const getAcknowledgeData = (req, res) => {
   const { token } = req.query;
-  console.log(verifyToken(token));
   const {
     album,
     fname,

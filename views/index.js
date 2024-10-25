@@ -16,6 +16,11 @@ import acknowledge_field_template from './acknowledge/acknowledge_fields.js';
 import url_template from './url.js';
 import success_template from './success.js';
 import cancel_template from './cancel.js';
+import admin_template from './admin/admin.js';
+import admin_directors_list_template from './admin/admin_directors_list.js';
+import admin_locations_list_template from './admin/admin_locations_list.js';
+import admin_director_template from './admin/admin_director.js';
+import admin_location_template from './admin/admin_location.js';
 
 export { 
     home, 
@@ -35,5 +40,10 @@ export {
     acknowledge_field_template,
     url_template,
     success_template,
-    cancel_template
+    cancel_template,
+    admin_template,
+    admin_directors_list_template,
+    admin_locations_list_template,
+    admin_director_template,
+    admin_location_template
 };
