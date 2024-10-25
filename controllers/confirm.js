@@ -88,7 +88,7 @@ const processConfirmData = async (req, res) => {
     }
 
     confirm_data["invoice"] = doc_response.pdf_url;
-    await updateOrder(req.session.order.id, confirm_data.payment_method, doc_response.pdf_url);
+    await updateOrder(req.session.order.id, confirm_data.payment_method, doc_response.view_url);
     let token = generateToken(confirm_data);
 
     const fullUrl = `${req.protocol}://${req.get(
