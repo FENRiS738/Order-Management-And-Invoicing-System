@@ -1,9 +1,5 @@
 const confirm_form_template = () => /*html*/ `
-    <form class="custom-form"
-            hx-on::after-request="document.querySelector('form').reset()"
-            hx-post="/confirm/submit"
-            hx-swap="outerHTML"
-    >
+    <form class="custom-form">
         <div class="mb-3">
             <select
                 class="form-select" 
@@ -20,9 +16,18 @@ const confirm_form_template = () => /*html*/ `
                 <option value="none">None</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button 
+            type="submit" 
+            class="btn btn-primary" 
+            hx-on::after-request="document.querySelector('form').reset();"
+            hx-post="/confirm/submit"
+            hx-swap="outerHTML" 
+            hx-target=".custom-form"
+            hx-on:click="this.disabled = true; this.textContent ='Generating the invoice...'" 
+        >
+            Submit
+        </button>
     </form>
 `;
-
 
 export default confirm_form_template;

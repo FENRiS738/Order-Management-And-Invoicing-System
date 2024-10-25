@@ -29,5 +29,6 @@ body {
 }
 
 #copy-text{
-  overflow-wrap: break-word;
+  overflow-x: scroll;
 }
+
