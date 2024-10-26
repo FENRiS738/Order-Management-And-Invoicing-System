@@ -1,0 +1,11 @@
+[
+  { "name": "Lake Orion", "id": "lake-orion" },
+  { "name": "Palm Desert", "id": "palm-desert" },
+  { "name": "Denver", "id": "Denver" },
+  { "name": "Scottsdale", "id": "Scottsdale" },
+  { "name": "Salem", "id": "Salem" },
+  { "name": "Winston-Salem", "id": "Winston-Salem" },
+  { "name": "Concord", "id": "Concord" },
+  { "name": "Minneapolis", "id": "Minneapolis" },
+  { "name": "Toronto", "id": "Toronto" }
+]
