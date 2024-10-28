@@ -49,4 +49,4 @@ By leveraging Node.js, Express, HTMX, and Airtable, this app provides an efficie
     npm start
 
 ## Live Preview Link
-[Order Management And Invoicing System](https://industrial-pad-439715-f6.el.r.appspot.com/)
+Will be updated soon.
