@@ -49,6 +49,7 @@ const generateDocument = async (confirm_data) => {
       lname: confirm_data["lname"],
       date: confirm_data["date"],
       address: confirm_data["address"],
+      album: confirm_data["album"],
       city: confirm_data["city"],
       state: confirm_data["state"],
       items: confirm_data["items"],
