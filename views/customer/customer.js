@@ -5,7 +5,7 @@ const customer_template = (customer) => /*html*/ `
         name="id"
         value="${customer.id}"
         class="form-control mb-1"
-        placeholder="Enter First Name"
+        placeholder="Enter Customer ID"
         required
       />
       <input
@@ -61,7 +61,7 @@ const customer_template = (customer) => /*html*/ `
         name="state"
         value="${customer.shipping_state}"
         class="form-control mb-1"
-        placeholder="Enter State Code"
+        placeholder="Enter State"
         required
       />
       <input
