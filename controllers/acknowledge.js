@@ -12,7 +12,7 @@ const verifyToken = (token) => {
   return data;
 };
 
-const stripeCheckout = async (product_name, amount) => {
+const stripeCheckout = async (req, product_name, amount) => {
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
@@ -25,8 +25,8 @@ const stripeCheckout = async (product_name, amount) => {
       },
     ],
     mode: "payment",
-    success_url: "http://localhost:5000/success",
-    cancel_url: "http://localhost:5000/cancel",
+    success_url: `${req.protocol}://${req.get("host")}/success`,
+    cancel_url: `${req.protocol}://${req.get("host")}/cancel`,
   });
 
   return session.url;
@@ -75,6 +75,7 @@ const checkout = async (req, res) => {
 
   if (formData["payment_method"] === "stripe") {
     const paymentLink = await stripeCheckout(
+      req,
       formData["album"],
       parseFloat(formData["grand_total"])
     );

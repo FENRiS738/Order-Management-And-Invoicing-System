@@ -29,3 +29,4 @@ function setTarget() {
       form.setAttribute("hx-target", ".locations-list");
   }
 }
+
