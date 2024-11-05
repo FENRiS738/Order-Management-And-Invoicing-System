@@ -51,4 +51,7 @@ app.get("/", async (req, res) => {
 app.get("/success", (req, res) => res.send(success_template()));
 app.get("/cancel", (req, res) => res.send(cancel_template()));
 
-app.listen(PORT, () => console.log(`App listening on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`App is running at port: ${PORT}`)
+});
+  

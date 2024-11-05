@@ -2,7 +2,7 @@ const customer_template = (customer) => /*html*/ `
     <div class="mb-3 border rounded-2 p-2">
       <input
         type="text"
-        name="id"
+        name="customer_id"
         value="${customer.id}"
         class="form-control mb-1"
         placeholder="Enter Customer ID"

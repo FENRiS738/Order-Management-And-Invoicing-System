@@ -43,7 +43,7 @@ const getCustomerData = async (req, res) => {
 const saveCustomerData = async (req, res) => {
   try {
     const customerData = req.body;
-
+    console.log(customerData);
     await saveCustomer(customerData);
     req.session["customer"] = customerData;
 
