@@ -36,6 +36,9 @@ const home = (directors, locations) => /*html*/ `
                         ${locations_list_template(locations)}
                     </div>
                     <div class="mb-3">
+                        ${date_template()}
+                    </div>
+                    <div class="mb-3">
                         <input
                             type="text"
                             name="customer_id"
@@ -55,10 +58,6 @@ const home = (directors, locations) => /*html*/ `
                             Generate
                         </button>
                     </div>
-                    <div class="mb-3">
-                        ${date_template()}
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </main>
