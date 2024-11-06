@@ -1,4 +1,6 @@
-const item_template = (item, index) => /*html*/`
+const item_template = (item, index) => { 
+console.log(item);
+return /*html*/`
     <div class="border rounded-3 p-2 mb-3">
         <input
             type="text"
@@ -31,6 +33,6 @@ const item_template = (item, index) => /*html*/`
             required
         >${item.images}</textarea>
     </div>
-`;
+`};
 
 export default item_template;

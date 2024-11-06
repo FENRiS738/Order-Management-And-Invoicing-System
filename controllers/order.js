@@ -11,6 +11,19 @@ dotenv.config();
 
 const SAVE_ORDER_API = process.env.SAVE_ORDER_API;
 
+const escapeHtml = (str) => {
+  return str.replace(/[&<>"']/g, (match) => {
+    const escapeMap = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+    };
+    return escapeMap[match];
+  });
+}
+
 const parseXML = (xml_data) => {
   const parser = new XMLParser();
   const order_obj = parser.parse(xml_data);
@@ -39,15 +52,14 @@ const extractData = (order_client) => {
   const ordered_items = order_client["Order"]["Ordered_Items"]["Ordered_Item"];
 
   const abstract_order_items = ordered_items.map((item) => {
-    const name = item["Product_Name"];
-    const description = item["Description"];
+    const name = escapeHtml(item["Product_Name"]);
+    const description = escapeHtml(item["Description"]);
     const quantity = item["Quantity"];
     const images = formatImageNames(item["Images"]);
     const tax = item["Tax"];
     const price = item["Price"];
     const sub_total = Number(price * quantity);
     const grand_total = sub_total + tax;
-
     return {
       name,
       description,
