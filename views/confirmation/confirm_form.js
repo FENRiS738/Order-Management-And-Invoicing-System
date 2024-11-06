@@ -23,7 +23,7 @@ const confirm_form_template = () => /*html*/ `
             hx-post="/confirm/submit"
             hx-swap="outerHTML" 
             hx-target=".custom-form"
-            hx-on:click="this.disabled = true; this.textContent ='Generating the invoice...'" 
+            hx-on:click="this.disabled = true; startLoadingAnimation(this)" 
         >
             Submit
         </button>
