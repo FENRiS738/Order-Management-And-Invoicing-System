@@ -12,7 +12,7 @@ import {
   acknowledge_router,
   admin_router,
 } from "./routes/index.js";
-import { cancel_template, home, success_template, admin_template } from "./views/index.js";
+import { cancel_template, home, success_template, page_not_found_template } from "./views/index.js";
 
 dotenv.config();
 
@@ -50,6 +50,11 @@ app.get("/", async (req, res) => {
 
 app.get("/success", (req, res) => res.send(success_template()));
 app.get("/cancel", (req, res) => res.send(cancel_template()));
+
+
+app.use((req, res) => {
+  res.status(404).send(page_not_found_template());
+});
 
 app.listen(PORT, () => {
   console.log(`App is running at port: ${PORT}`)
