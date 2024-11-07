@@ -31,11 +31,6 @@ function setTarget() {
   }
 }
 
-function startLoadingAnimation(event, button) {
-  event.preventDefault();
-  button.innerHTML =
-    'Generating Invoice <div class="spinner-border spinner-border-sm text-light ms-1" role="status"><span class="visually-hidden">Loading...</span></div>';
-}
 
 async function commitOrder(event) {
   event.preventDefault();
@@ -55,4 +50,31 @@ async function commitOrder(event) {
   } else {
     alert("Order committed successfully!");
   }
+}
+
+
+// Animations
+
+function startLoadingAnimation(event, button) {
+  event.preventDefault();
+  button.innerHTML =
+    'Generating Invoice <div class="spinner-border spinner-border-sm text-light ms-1" role="status"><span class="visually-hidden">Loading...</span></div>';
+}
+
+function startFetchingAnimation(event, button) {
+  event.preventDefault();
+  button.innerHTML =
+    'Fetching Contact <div class="spinner-border spinner-border-sm text-dark ms-1" role="status"><span class="visually-hidden">Loading...</span></div>';
+}
+
+function startStoringContactAnimation(event, button) {
+  event.preventDefault();
+  button.innerHTML =
+    'Saving Contact <div class="spinner-border spinner-border-sm text-light ms-1" role="status"><span class="visually-hidden">Loading...</span></div>';
+}
+
+function startStoringOrderAnimation(event, button) {
+  event.preventDefault();
+  button.innerHTML =
+    'Saving Order <div class="spinner-border spinner-border-sm text-light ms-1" role="status"><span class="visually-hidden">Loading...</span></div>';
 }

@@ -140,6 +140,17 @@ const confirm_template = (data) => /*html*/ `
             readonly
         >${data.items}</textarea>
     </div>
+    <button 
+            type="submit" 
+            class="btn btn-primary" 
+            hx-on::after-request="document.querySelector('form').reset();"
+            hx-post="/confirm/submit"
+            hx-swap="outerHTML" 
+            hx-target=".custom-form"
+            hx-on:click="this.disabled = true; startLoadingAnimation(event, this)" 
+        >
+            Submit
+        </button>
 `;
 
 export default confirm_template;

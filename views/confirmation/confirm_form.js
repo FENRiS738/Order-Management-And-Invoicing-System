@@ -16,17 +16,6 @@ const confirm_form_template = () => /*html*/ `
                 <option value="none">None</option>
             </select>
         </div>
-        <button 
-            type="submit" 
-            class="btn btn-primary" 
-            hx-on::after-request="document.querySelector('form').reset();"
-            hx-post="/confirm/submit"
-            hx-swap="outerHTML" 
-            hx-target=".custom-form"
-            hx-on:click="this.disabled = true; startLoadingAnimation(event, this)" 
-        >
-            Submit
-        </button>
     </form>
 `;
 

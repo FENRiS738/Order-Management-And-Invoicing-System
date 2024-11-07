@@ -73,7 +73,7 @@ const customer_template = (customer) => /*html*/ `
         required
       />
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary" id="save-contact-button">Submit</button>
 `;
 
 export default customer_template;
