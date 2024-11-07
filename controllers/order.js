@@ -10,6 +10,7 @@ import {
 dotenv.config();
 
 const SAVE_ORDER_API = process.env.SAVE_ORDER_API;
+const ORDER_COMMIT_API = process.env.ORDER_COMMIT_API;;
 
 const escapeHtml = (str) => {
   return str.replace(/[&<>"']/g, (match) => {
@@ -138,17 +139,17 @@ const updatedItemsString = (items_count, orderData) => {
   return JSON.stringify(updated_items_string);
 };
 
-const saveOrder = async (orderData, id, date) => {
-  const response = await axios.post(SAVE_ORDER_API, { orderData, id, date });
+const saveOrder = async (orderData, record_id, date) => {
+  const response = await axios.post(SAVE_ORDER_API, { orderData, record_id, date });
   return response.data.order_id;
 };
 
 const saveOrdersData = async (req, res) => {
   try {
     const orderData = req.body;
-    const { id, date } = req.session.customer;
+    const { record_id, date } = req.session.customer;
 
-    const order_id = await saveOrder(orderData, id, date);
+    const order_id = await saveOrder(orderData, record_id, date);
 
     if (order_id === undefined || order_id === null) {
       return res.send(error_template({ message: "Order not saved." }));
@@ -169,4 +170,16 @@ const saveOrdersData = async (req, res) => {
   }
 };
 
-export { getOrdersData, saveOrdersData };
+
+const commitOrder = async (req, res) => {
+  const { id } = req.session.order;
+  try{
+    const response = await axios.post(ORDER_COMMIT_API, { id });
+    res.status(200).json({ redirectUrl: '/' });
+  }catch(err)
+  {
+    res.status(500).json({data: "Something went wrong!"})
+  }
+}
+
+export { getOrdersData, saveOrdersData, commitOrder };

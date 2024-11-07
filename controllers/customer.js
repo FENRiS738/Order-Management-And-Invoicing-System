@@ -20,7 +20,7 @@ const getCustomer = async (id) => {
 
 const saveCustomer = async (customerData) => {
   const response = await axios.post(SAVE_CUSTOMER_API, customerData);
-  return response.data;
+  return response.data.record_id;
 };
 
 const getCustomerData = async (req, res) => {
@@ -43,9 +43,9 @@ const getCustomerData = async (req, res) => {
 const saveCustomerData = async (req, res) => {
   try {
     const customerData = req.body;
-    await saveCustomer(customerData);
+    const record_id = await saveCustomer(customerData);
+    customerData['record_id'] = record_id
     req.session["customer"] = customerData;
-
     res.send(order_form_template());
   } catch (error) {
     res.send(error_template(error));
