@@ -18,6 +18,9 @@ function copyUrl(event) {
     });
 
   window.getSelection().removeAllRanges();
+  
+  const commit_order_div = document.getElementById('order-commit-div')
+  commit_order_div.style.display = 'block';
 }
 
 function setTarget() {

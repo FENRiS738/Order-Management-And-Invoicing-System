@@ -34,3 +34,6 @@ body {
   overflow-x: scroll;
 }
 
+.hidden{
+  display: none;
+}

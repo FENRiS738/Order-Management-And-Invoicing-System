@@ -38,7 +38,9 @@ const getConfirmData = (req, res) => {
 
     res.send(confirm_template(combined_fields));
   } catch (error) {
-    res.send(error_template(error));
+    res.send(error_template({
+      message: "Something went wrong!"
+    }));
   }
 };
 
@@ -76,17 +78,17 @@ const updateOrder = async (order_id, payment_method, pdf_url) => {
 };
 
 const processConfirmData = async (req, res) => {
+  const confirm_data = req.body;
+  const doc_response = await generateDocument(confirm_data);
+  
+  if (!doc_response.success) {
+    return res.send(
+      error_template({
+        message: "Failed to create the Invoice. Please try again.",
+      })
+    );
+  }
   try {
-    const confirm_data = req.body;
-    const doc_response = await generateDocument(confirm_data);
-
-    if (!doc_response.success) {
-      return res.send(
-        error_template({
-          message: "Failed to create the Invoice. Please try again.",
-        })
-      );
-    }
 
     confirm_data["invoice"] = doc_response.pdf_url;
     await updateOrder(req.session.order.id, confirm_data.payment_method, doc_response.view_url);
@@ -97,7 +99,9 @@ const processConfirmData = async (req, res) => {
     )}/acknowledge?token=${encodeURIComponent(token)}`;
     res.send(url_template(fullUrl, doc_response.view_url));
   } catch (error) {
-    res.send(error_template(error));
+    res.send(error_template({
+      message: "Something went wrong!"
+    }));
   }
 };
 

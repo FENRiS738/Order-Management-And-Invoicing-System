@@ -108,20 +108,22 @@ const getOrders = (xml_file) => {
 };
 
 const getOrdersData = async (req, res) => {
+  const { xml_file } = req.files;
+  
+  if (!xml_file) {
+    return res.send(
+      error_template({ message: "Please select an invoice XML file." })
+    );
+  }
+  
   try {
-    const { xml_file } = req.files;
-
-    if (!xml_file) {
-      return res.send(
-        error_template({ message: "Please select an invoice XML file." })
-      );
-    }
-
     const order = getOrders(xml_file);
     req.session["items_count"] = order.abstract_order_items.length;
     res.send(order_template(order));
   } catch (error) {
-    res.send(error_template(error));
+    res.send(error_template({
+      message: "Something went wrong!"
+    }));
   }
 };
 
@@ -145,16 +147,16 @@ const saveOrder = async (orderData, record_id, date) => {
 };
 
 const saveOrdersData = async (req, res) => {
+  const orderData = req.body;
+  const { record_id, date } = req.session.customer;
+  
+  const order_id = await saveOrder(orderData, record_id, date);
+  
+  if (order_id === undefined || order_id === null) {
+    return res.send(error_template({ message: "Order not saved." }));
+  }
+  
   try {
-    const orderData = req.body;
-    const { record_id, date } = req.session.customer;
-
-    const order_id = await saveOrder(orderData, record_id, date);
-
-    if (order_id === undefined || order_id === null) {
-      return res.send(error_template({ message: "Order not saved." }));
-    }
-
     const updated_items_string = updatedItemsString(
       req.session.items_count,
       orderData
@@ -166,7 +168,9 @@ const saveOrdersData = async (req, res) => {
 
     res.send(confirm_form_template());
   } catch (error) {
-    res.send(error_template(error));
+    res.send(error_template({
+      message: "Something went wrong!"
+    }));
   }
 };
 
