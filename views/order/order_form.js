@@ -1,8 +1,10 @@
 const order_form_template = () => /*html*/ `
-    <form class="custom-form"
-            hx-on::after-request="document.querySelector('form').reset()"
-            hx-post="/orders/submit"
-            hx-swap="outerHTML"
+    <form 
+        class="custom-form"
+        hx-on::after-request="document.querySelector('form').reset()"
+        hx-post="/orders/submit"
+        hx-swap="outerHTML"
+        hx-on:submit="document.getElementById('save-order-button').disabled = true; startStoringOrderAnimation(event, document.getElementById('save-order-button'))"
     >
         <div class="mb-3">
             <input
@@ -18,7 +20,6 @@ const order_form_template = () => /*html*/ `
                 required
             />
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 `;
 

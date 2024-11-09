@@ -19,7 +19,7 @@ function formattedData(rawData) {
 
 function getProductTableFromData(items) {
   var tableData = [];
-  
+
   items.forEach(function (item) {
     tableData.push([item.description, item.image_name.split(",").join("\n"), item.quantity]);
   });
@@ -30,6 +30,10 @@ function formatTableColumns(table) {
   table.setColumnWidth(0, 230); // Adjust width for "Description"
   table.setColumnWidth(1, 230); // Adjust width for "Images"
   table.setColumnWidth(2, 50);  // Adjust width for "Quantity"
+}
+
+function formatCurrency(value) {
+  return "$" + parseFloat(value).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function main(data) {
@@ -62,17 +66,27 @@ function main(data) {
     body.replaceText("{{Status}}", "None");
   }
 
+  // if (data.payment_method === "none") {
+  //   body.replaceText("{{Sub_Total}}", "0.0");
+  //   body.replaceText("{{Sales_Tax}}", "0.0");
+  //   body.replaceText("{{Grand_Total}}", "0.0");
+  // } else {
+  //   body.replaceText("{{Sub_Total}}", data.sub_total);
+  //   body.replaceText("{{Sales_Tax}}", data.total_tax);
+  //   body.replaceText("{{Grand_Total}}", data.grand_total);
+  // }
+
+  // Format and replace totals with currency format
   if (data.payment_method === "none") {
-    body.replaceText("{{Sub_Total}}", "0.0");
-    body.replaceText("{{Sales_Tax}}", "0.0");
-    body.replaceText("{{Grand_Total}}", "0.0");
+    body.replaceText("{{Sub_Total}}", formatCurrency(0));
+    body.replaceText("{{Sales_Tax}}", formatCurrency(0));
+    body.replaceText("{{Grand_Total}}", formatCurrency(0));
   } else {
-    body.replaceText("{{Sub_Total}}", data.sub_total);
-    body.replaceText("{{Sales_Tax}}", data.total_tax);
-    body.replaceText("{{Grand_Total}}", data.grand_total);
+    body.replaceText("{{Sub_Total}}", formatCurrency(data.sub_total));
+    body.replaceText("{{Sales_Tax}}", formatCurrency(data.total_tax));
+    body.replaceText("{{Grand_Total}}", formatCurrency(data.grand_total));
   }
 
-  // Insert product table
   let tableData = getProductTableFromData(data.items);
   let tableElement = body.findText("{{Table}}");
   let table = body.insertTable(body.getChildIndex(tableElement.getElement().getParent()), tableData);

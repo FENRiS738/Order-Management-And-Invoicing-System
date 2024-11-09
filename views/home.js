@@ -25,10 +25,13 @@ const home = (directors, locations) => /*html*/ `
         </header>
         <main class="container">
             <div class="form-wrapper p-5">
-                <form class="custom-form"
-                        hx-on::after-request="document.querySelector('form').reset()"
-                        hx-post="/customers/submit" 
-                        hx-swap="outerHTML">
+                <form 
+                    class="custom-form"
+                    hx-on::after-request="document.querySelector('form').reset()"
+                    hx-post="/customers/submit" 
+                    hx-swap="outerHTML"
+                    hx-on:submit="document.getElementById('save-contact-button').disabled = true; startStoringContactAnimation(event, document.getElementById('save-contact-button'))"
+                >
                     <div class="mb-3">
                         ${directors_list_template(directors)}
                     </div>
@@ -54,6 +57,7 @@ const home = (directors, locations) => /*html*/ `
                             hx-target="closest div"
                             hx-swap="outerHTML"
                             hx-include="#customer_id"
+                            hx-on:click="this.disabled = true; startFetchingAnimation(event, this)"
                         >
                             Generate
                         </button>

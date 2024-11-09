@@ -14,6 +14,7 @@ const verifyToken = (token) => {
 
 const stripeCheckout = async (req, product_name, amount) => {
   const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card", "affirm"],
     line_items: [
       {
         price_data: {

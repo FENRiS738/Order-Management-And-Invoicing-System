@@ -21,6 +21,8 @@ import admin_directors_list_template from './admin/admin_directors_list.js';
 import admin_locations_list_template from './admin/admin_locations_list.js';
 import admin_director_template from './admin/admin_director.js';
 import admin_location_template from './admin/admin_location.js';
+import page_not_found_template from './404-not-found.js';
+
 
 export { 
     home, 
@@ -45,5 +47,6 @@ export {
     admin_directors_list_template,
     admin_locations_list_template,
     admin_director_template,
-    admin_location_template
+    admin_location_template,
+    page_not_found_template
 };

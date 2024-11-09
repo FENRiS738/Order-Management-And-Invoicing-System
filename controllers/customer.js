@@ -20,35 +20,39 @@ const getCustomer = async (id) => {
 
 const saveCustomer = async (customerData) => {
   const response = await axios.post(SAVE_CUSTOMER_API, customerData);
-  return response.data;
+  return response.data.record_id;
 };
 
 const getCustomerData = async (req, res) => {
+  const { customer_id } = req.body;
+  
+  if (customer_id === null || customer_id === "") {
+    return res.send(
+      error_template({ message: "Please enter a valid customer id." })
+    );
+  }
   try {
-    const { customer_id } = req.body;
-
-    if (customer_id === null || customer_id === "") {
-      return res.send(
-        error_template({ message: "Please enter a valid customer id." })
-      );
-    }
 
     const customer = await getCustomer(customer_id);
     res.send(customer_template(customer));
   } catch (error) {
-    res.send(error_template(error));
+    res.send(error_template({
+      message: "Something went wrong!"
+    }));
   }
 };
 
 const saveCustomerData = async (req, res) => {
   try {
     const customerData = req.body;
-    await saveCustomer(customerData);
+    const record_id = await saveCustomer(customerData);
+    customerData['record_id'] = record_id
     req.session["customer"] = customerData;
-
     res.send(order_form_template());
   } catch (error) {
-    res.send(error_template(error));
+    res.send(error_template({
+      message: "Something went wrong!"
+    }));
   }
 };
 
