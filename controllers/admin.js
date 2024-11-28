@@ -1,74 +1,140 @@
 import fs from "fs/promises";
 import path from "path";
+import connectToDB from "../data/database.js";
+
 import {
   admin_director_template,
   admin_location_template,
   admin_template,
+  error_template
 } from "../views/index.js";
 
-const readData = async (filename) => {
-  const filePath = path.join("data", `${filename}.json`);
-  const data = await fs.readFile(filePath, "utf-8");
-  return JSON.parse(data);
+const readData = async (connection, collection_name) => {
+  const collection = await connection.database.collection(collection_name).find({}).toArray();
+  return collection;
 };
 
-const writeData = async (filename, data) => {
-  const filePath = path.join("data", `${filename}.json`);
-  await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-  return;
-};
 
 const getAdminPage = async (req, res) => {
-  const directors = await readData("directors");
-  const locations = await readData("locations");
-  res.send(admin_template(directors, locations));
+  try {
+    const conn = await connectToDB(); 
+    
+    if(!conn.success){
+      return res.send(
+        error_template({ message: conn.message })
+      );
+    }
+
+    const directors = await readData(conn, "directors");
+    const locations = await readData(conn, "locations");
+
+    res.send(admin_template(directors, locations));
+  } catch (error) {
+    return res.send(
+      error_template({ message: "Something went wrong!" })
+    );
+  }
 };
+
 
 const addAdminData = async (req, res) => {
   const { name, id, type } = req.body;
-  const data = await readData(type);
-  data.push({ name, id });
-  await writeData(type, data);
 
-  res.redirect(`/admin/${id}`);
+  try {
+    const conn = await connectToDB();
+
+    if (!conn.success) {
+      return res.send(
+        error_template({ message: conn.message })
+      );
+    }
+
+    const collection = conn.database.collection(type);
+    await collection.insertOne({ name, id });
+
+    res.redirect(`/admin/${id}`);
+  } catch (error) {
+    console.error("Error in addAdminData:", error);
+    res.status(500).send(
+      error_template({ message: "Failed to add data." })
+    );
+  }
 };
+
 
 const getItemData = async (req, res) => {
-  const directors = await readData("directors");
-  const locations = await readData("locations");
-
   const { id } = req.params;
-  const director = directors.find((d) => d.id === id);
-  if (director) {
-    res.send(admin_director_template(director));
-  }
 
-  const location = locations.find((l) => l.id === id);
-  if (location) {
-    res.send(admin_location_template(location));
+  try {
+    const conn = await connectToDB();
+
+    if (!conn.success) {
+      return res.send(
+        error_template({ message: conn.message })
+      );
+    }
+
+    const directors = await conn.database.collection("directors").findOne({ id });
+    if (directors) {
+      return res.send(admin_director_template(directors));
+    }
+
+    const locations = await conn.database.collection("locations").findOne({ id });
+    if (locations) {
+      return res.send(admin_location_template(locations));
+    }
+
+    res.status(404).send(
+      error_template({ message: "Item not found." })
+    );
+  } catch (error) {
+    console.error("Error in getItemData:", error);
+    res.status(500).send(
+      error_template({ message: "Failed to fetch item data." })
+    );
   }
 };
+
 
 const deleteItemData = async (req, res) => {
   const { id } = req.params;
 
-  const directors = await readData("directors");
-  const locations = await readData("locations");
+  try {
+    const conn = await connectToDB();
 
-  const director_idx = directors.findIndex((b) => String(b.id) === String(id));
-  if (director_idx !== -1) {
-    directors.splice(director_idx, 1);
-    await writeData("directors", directors);
-    res.send();
-    return;
-  }
+    if (!conn.success) {
+      return res.send(
+        error_template({ message: conn.message })
+      );
+    }
 
-  const location_idx = locations.findIndex((b) => String(b.id) === String(id));
-  if (location_idx !== -1) {
-    locations.splice(location_idx, 1);
-    await writeData("locations", locations);
-    res.send();
+    const directorsResult = await conn.database
+      .collection("directors")
+      .deleteOne({ id });
+
+    if (directorsResult.deletedCount > 0) {
+      return res.send();
+    }
+
+    const locationsResult = await conn.database
+      .collection("locations")
+      .deleteOne({ id });
+
+    if (locationsResult.deletedCount > 0) {
+      return res.send();
+    }
+
+    res.status(404).send(
+      error_template({ message: "Item not found." })
+    );
+  } catch (error) {
+    console.error("Error in deleteItemData:", error);
+    res.status(500).send(
+      error_template({ message: "Failed to delete item." })
+    );
   }
 };
 
-export { getAdminPage, addAdminData, getItemData, deleteItemData };
+
+
+export { getAdminPage, addAdminData, getItemData, deleteItemData, readData };

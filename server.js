@@ -1,9 +1,8 @@
 import express from "express";
 import fileUpload from "express-fileupload";
-import fs from 'fs/promises';
-import path from 'path';
 import dotenv from "dotenv";
 import session from "express-session";
+import connectToDB from "./data/database.js";
 
 import {
   confirm_router,
@@ -13,6 +12,7 @@ import {
   admin_router,
 } from "./routes/index.js";
 import { cancel_template, home, success_template, page_not_found_template } from "./views/index.js";
+import { readData } from "./controllers/admin.js";
 
 dotenv.config();
 
@@ -42,8 +42,16 @@ app.use("/admin", admin_router);
 
 
 app.get("/", async (req, res) => {
-  const directors = JSON.parse(await fs.readFile(path.join('data', 'directors.json'), 'utf-8'));
-  const locations = JSON.parse(await fs.readFile(path.join('data', 'locations.json'), 'utf-8'));
+  const conn = await connectToDB();
+
+  if(!conn.success){
+    return res.send(
+      error_template({ message: conn.message })
+    );
+  }
+
+  const directors = await readData(conn, "directors");
+  const locations = await readData(conn, "locations");
   res.send(home(directors, locations));
 });
 
