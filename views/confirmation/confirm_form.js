@@ -14,6 +14,7 @@ const confirm_form_template = () => /*html*/ `
                 <option value="stripe">Stripe</option>
                 <option value="partial.ly">Partial.ly</option>
                 <option value="none">None</option>
+                <option value="refund">Refund</option>
             </select>
         </div>
     </form>

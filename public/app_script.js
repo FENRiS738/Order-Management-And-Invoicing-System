@@ -62,22 +62,16 @@ function main(data) {
   } else if (data.payment_method === "partial.ly") {
     body.replaceText("{{Status}}", "Open");
     body.replaceText("{{Status_Description}}", "To check your current payment plan balance, please visit partial.ly/customer.");
-  } else {
-    body.replaceText("{{Status}}", "None");
+  } else if (data.payment_method === "none") {
+    body.replaceText("{{Status}}", "Paid");
+    body.replaceText("{{Status_Description}}", "");
+  }else {
+    body.replaceText("{{Status}}", "Refunded");
+    body.replaceText("{{Status_Description}}", "");
   }
 
-  // if (data.payment_method === "none") {
-  //   body.replaceText("{{Sub_Total}}", "0.0");
-  //   body.replaceText("{{Sales_Tax}}", "0.0");
-  //   body.replaceText("{{Grand_Total}}", "0.0");
-  // } else {
-  //   body.replaceText("{{Sub_Total}}", data.sub_total);
-  //   body.replaceText("{{Sales_Tax}}", data.total_tax);
-  //   body.replaceText("{{Grand_Total}}", data.grand_total);
-  // }
-
   // Format and replace totals with currency format
-  if (data.payment_method === "none") {
+  if (data.payment_method === "none" || data.payment_method === "refund") {
     body.replaceText("{{Sub_Total}}", formatCurrency(0));
     body.replaceText("{{Sales_Tax}}", formatCurrency(0));
     body.replaceText("{{Grand_Total}}", formatCurrency(0));
