@@ -37,12 +37,35 @@ function formatCurrency(value) {
 }
 
 function main(data) {
+  let albumFolder;
   // Create album folder at the root level of Google Drive
-  const albumFolder = DriveApp.createFolder(data.album);
+  const folders = DriveApp.getFoldersByName(data.album);
+  if (folders.hasNext()) {
+    albumFolder = folders.next();
+  } else {
+    albumFolder = DriveApp.createFolder(data.album);
+  }
+
+  let invoice_type;
+
+  switch (data.payment_method) {
+    case "stripe":
+      invoice_type = "Stripe";
+      break;
+    case "partial.ly":
+      invoice_type = "Partial.ly";
+      break;
+    case "none":
+      invoice_type = "Paid";
+      break;
+    case "refund":
+      invoice_type = "Refund";
+      break;
+  }
 
   // Create a copy of the template document
   let doc = DriveApp.getFileById("1D9HHVLZHbqIZr7aJJ9Pp_VpmlneNA1mTeoA_K_LC16k");
-  let newDoc = doc.makeCopy(`Invoice: ${data.fname} ${data.date}`);
+  let newDoc = doc.makeCopy(`Invoice ${invoice_type}: ${data.fname} ${data.date}`);
   albumFolder.addFile(newDoc); // Move new document to the album folder
 
   let openDoc = DocumentApp.openById(newDoc.getId());
@@ -65,7 +88,7 @@ function main(data) {
   } else if (data.payment_method === "none") {
     body.replaceText("{{Status}}", "Paid");
     body.replaceText("{{Status_Description}}", "");
-  }else {
+  } else {
     body.replaceText("{{Status}}", "Refunded");
     body.replaceText("{{Status_Description}}", "");
   }
@@ -93,7 +116,7 @@ function main(data) {
 
   // Convert the document to PDF
   let pdf = DriveApp.getFileById(newDoc.getId()).getAs('application/pdf');
-  let pdfFile = albumFolder.createFile(pdf).setName(`Invoice: ${data.fname} ${data.date}.pdf`);
+  let pdfFile = albumFolder.createFile(pdf).setName(`Invoice ${invoice_type}: ${data.fname} ${data.date}.pdf`);
 
   // Make the PDF publicly accessible
   pdfFile.setSharing(DriveApp.Access.ANYONE, DriveApp.Permission.VIEW);
