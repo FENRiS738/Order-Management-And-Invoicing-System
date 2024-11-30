@@ -38,22 +38,30 @@ function setTarget() {
 async function commitOrder(event) {
   event.preventDefault();
 
-  const response = await fetch("/orders/commit", {
-    method: "POST",
-  });
+  try {
+    const response = await fetch("/orders/commit", {
+      method: "POST"
+    });
 
-  if (!response.status === 200) {
-    alert("Failed to commit the order.");
-  }
+    if (response.status !== 200) {
+      alert("Failed to commit the order.");
+      return;
+    }
 
-  const data = await response.json();
-  if (data.redirectUrl) {
-    window.location.href = data.redirectUrl;
-    alert("Order committed successfully!");
-  } else {
-    alert("Order committed successfully!");
+    let data = await response.json();
+    console.log(data);
+    if (data.redirectUrl) {
+      alert("Order committed successfully!");
+      window.location.href = data.redirectUrl;
+    } else {
+      alert("Failed to commit order!");
+    }
+  } catch (error) {
+    console.error("An error occurred:", error);
+    alert("An unexpected error occurred.");
   }
 }
+
 
 
 // Animations

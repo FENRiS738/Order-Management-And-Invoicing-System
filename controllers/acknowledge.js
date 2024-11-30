@@ -89,7 +89,7 @@ const checkout = async (req, res) => {
     );
     res.redirect(paymentLink);
   } else {
-    res.redirect("/");
+    res.redirect("https://bluebirdportraits.com/");
   }
 };
 

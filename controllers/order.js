@@ -179,7 +179,7 @@ const commitOrder = async (req, res) => {
   const { id } = req.session.order;
   try{
     const response = await axios.post(ORDER_COMMIT_API, { id });
-    res.status(200).json({ redirectUrl: '/' });
+    res.status(200).json({redirectUrl : "/"});
   }catch(err)
   {
     res.status(500).json({data: "Something went wrong!"})
