@@ -34,7 +34,7 @@ const stripeCheckout = async (req, product_name, amount) => {
 };
 
 const partiallyCheckout = (director_name, location, amount) => {
-  const partially_uri = `https://partial.ly/checkout?offer=4c2a7f12-0883-4905-a0c1-5e3cd9bebe69&amount=${encodeURIComponent(
+  const partially_uri = `https://partial.ly/checkout?offer=641b34d9-6f87-48bd-a155-128d4a5f85df&amount=${encodeURIComponent(
     amount
   )}&meta[description]=make_link&meta[Salesperson]=${encodeURIComponent(
     director_name
