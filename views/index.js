@@ -22,6 +22,7 @@ import admin_locations_list_template from './admin/admin_locations_list.js';
 import admin_director_template from './admin/admin_director.js';
 import admin_location_template from './admin/admin_location.js';
 import page_not_found_template from './404-not-found.js';
+import get_customer_template from './customer/get_customer.js';
 
 
 export { 
@@ -30,7 +31,8 @@ export {
     directors_list_template, 
     location_template, 
     locations_list_template, 
-    date_template, 
+    date_template,
+    get_customer_template,
     customer_template, 
     order_form_template,
     error_template,

@@ -13,6 +13,12 @@ const verifyToken = (token) => {
 };
 
 const stripeCheckout = async (req, product_name, amount) => {
+  console.log(req.session);
+  const metadata = {
+    customer: req.session.customer,
+    items_count: req.session.items_count,
+    order: req.session.order
+  }
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card", "affirm"],
     line_items: [
@@ -28,6 +34,7 @@ const stripeCheckout = async (req, product_name, amount) => {
     mode: "payment",
     success_url: `${req.protocol}://${req.get("host")}/success`,
     cancel_url: `${req.protocol}://${req.get("host")}/cancel`,
+    metadata,
   });
 
   return session.url;
