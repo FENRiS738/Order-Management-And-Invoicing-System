@@ -12,13 +12,8 @@ const verifyToken = (token) => {
   return data;
 };
 
-const stripeCheckout = async (req, product_name, amount) => {
-  console.log(req.session);
-  const metadata = {
-    customer: req.session.customer,
-    items_count: req.session.items_count,
-    order: req.session.order
-  }
+const stripeCheckout = async (req, product_name, amount, metadata) => {
+
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card", "affirm"],
     line_items: [
@@ -85,7 +80,8 @@ const checkout = async (req, res) => {
     const paymentLink = await stripeCheckout(
       req,
       formData["album"],
-      parseFloat(formData["grand_total"])
+      parseFloat(formData["grand_total"]),
+      formData
     );
     res.redirect(paymentLink);
   } else if (formData["payment_method"] === "partial.ly") {
