@@ -80,7 +80,7 @@ const updateOrder = async (order_id, payment_method, pdf_url) => {
 const processConfirmData = async (req, res) => {
   const confirm_data = req.body;
   const doc_response = await generateDocument(confirm_data);
-  
+
   if (!doc_response.success) {
     return res.send(
       error_template({

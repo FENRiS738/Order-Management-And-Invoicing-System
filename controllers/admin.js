@@ -1,5 +1,3 @@
-import fs from "fs/promises";
-import path from "path";
 import connectToDB from "../data/database.js";
 
 import {

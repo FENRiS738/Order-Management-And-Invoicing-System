@@ -1,10 +1,8 @@
-import {
-  directors_list_template,
-  locations_list_template,
-  date_template,
-} from "./index.js";
+import { 
+    get_customer_template
+} from "../views/index.js";
 
-const home = (directors, locations) => /*html*/ `
+const home = () => /*html*/ `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -25,44 +23,7 @@ const home = (directors, locations) => /*html*/ `
         </header>
         <main class="container">
             <div class="form-wrapper p-5">
-                <form 
-                    class="custom-form"
-                    hx-on::after-request="document.querySelector('form').reset()"
-                    hx-post="/customers/submit" 
-                    hx-swap="outerHTML"
-                    hx-on:submit="document.getElementById('save-contact-button').disabled = true; startStoringContactAnimation(event, document.getElementById('save-contact-button'))"
-                >
-                    <div class="mb-3">
-                        ${directors_list_template(directors)}
-                    </div>
-                    <div class="mb-3">
-                        ${locations_list_template(locations)}
-                    </div>
-                    <div class="mb-3">
-                        ${date_template()}
-                    </div>
-                    <div class="mb-3">
-                        <input
-                            type="text"
-                            name="customer_id"
-                            id="customer_id"
-                            placeholder="Enter Customer ID"
-                            class="form-control mb-2"
-                            required
-                        />
-                        <button 
-                            type="button"
-                            class="btn btn-warning"
-                            hx-post="/customers"
-                            hx-target="closest div"
-                            hx-swap="outerHTML"
-                            hx-include="#customer_id"
-                            hx-on:click="this.disabled = true; startFetchingAnimation(event, this)"
-                        >
-                            Generate
-                        </button>
-                    </div>
-                </form>
+                ${get_customer_template()}
             </div>
         </main>
 
