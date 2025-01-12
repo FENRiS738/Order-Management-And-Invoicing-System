@@ -1,6 +1,4 @@
-import { 
-  directors_list_template,
-  locations_list_template,
+import {
   date_template
 } from "../index.js";
 
@@ -12,24 +10,19 @@ const customer_template = (customer, directors, locations) => /*html*/ `
         hx-swap="outerHTML"
         hx-on:submit="document.getElementById('save-contact-button').disabled = true; startStoringContactAnimation(event, document.getElementById('save-contact-button'))"
     >
-      <div class="mb-3">
-          ${directors_list_template(directors)}
-      </div>
-      <div class="mb-3">
-          ${locations_list_template(locations)}
-      </div>
-      <div class="mb-3">
+        <div class="mb-3 border bg-light rounded-2 p-2">
+
           ${date_template()}
-      </div>
-      <div class="mb-3 border bg-light rounded-2 p-2">
+          <span class="ms-1 form-text">Customer ID</span>
         <input
           type="text"
           name="customer_id"
           value="${customer.id}"
-          class="form-control mb-1"
+          class="form-control mb-2"
           placeholder="Enter Customer ID"
           required
         />
+        <span class="ms-1 form-text">First Name</span>
         <input
           type="text"
           name="fname"
@@ -38,6 +31,7 @@ const customer_template = (customer, directors, locations) => /*html*/ `
           placeholder="Enter First Name"
           required
         />
+        <span class="ms-1 form-text">Last Name</span>
         <input
           type="text"
           name="lname"
@@ -46,6 +40,7 @@ const customer_template = (customer, directors, locations) => /*html*/ `
           placeholder="Enter Last Name"
           required
         />
+        <span class="ms-1 form-text">Email</span>
         <input
           type="email"
           name="email"
@@ -54,6 +49,7 @@ const customer_template = (customer, directors, locations) => /*html*/ `
           placeholder="Enter Email"
           required
         />
+        <span class="ms-1 form-text">Phone</span>
         <input
           type="text"
           name="phone"
@@ -62,6 +58,7 @@ const customer_template = (customer, directors, locations) => /*html*/ `
           placeholder="Enter Contact Number"
           required
         />
+        <span class="ms-1 form-text">Address</span>
         <input
           type="text"
           name="address"
@@ -70,6 +67,7 @@ const customer_template = (customer, directors, locations) => /*html*/ `
           placeholder="Enter Address"
           required
         />
+        <span class="ms-1 form-text">City</span>
         <input
           type="text"
           name="city"
@@ -89,6 +87,7 @@ const customer_template = (customer, directors, locations) => /*html*/ `
           placeholder="Enter State"
           required
         />
+        <span class="ms-1 form-text">Postal Code</span>
         <input
           type="text"
           name="zip"

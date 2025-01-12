@@ -1,6 +1,6 @@
 import { item_template } from "../index.js";
 
-const order_template = (order) => /*html*/ `
+const order_template = (order, directors, locations) => /*html*/ `
     <div class="mb-3">
         <div class="mb-3">
             <label for="album" class="form-label mb-0">
@@ -15,6 +15,12 @@ const order_template = (order) => /*html*/ `
                 placeholder="Enter Album Name"
                 required
             />
+        </div>
+        <div class="mb-3">
+          ${directors_list_template(directors)}
+        </div>
+        <div class="mb-3">
+            ${locations_list_template(locations)}
         </div>
         ${order.abstract_order_items.map((item, index) => item_template(item, index)).join("")}
         <div class="mb-3">

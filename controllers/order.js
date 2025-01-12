@@ -7,10 +7,33 @@ import {
   order_template,
 } from "../views/index.js";
 
+import connectToDB from "../data/database.js";
+import { readData } from "../controllers/admin.js";
+
+
 dotenv.config();
 
 const SAVE_ORDER_API = process.env.SAVE_ORDER_API;
 const ORDER_COMMIT_API = process.env.ORDER_COMMIT_API;;
+
+
+const get_admin_data = async () => {
+  const conn = await connectToDB();
+
+  if (!conn.success) {
+    return res.send(
+      error_template({ message: conn.message })
+    );
+  }
+
+  const directors = await readData(conn, "directors");
+  const locations = await readData(conn, "locations");
+
+  return {
+    directors,
+    locations
+  }
+}
 
 const escapeHtml = (str) => {
   return str.replace(/[&<>"']/g, (match) => {
@@ -109,17 +132,18 @@ const getOrders = (xml_file) => {
 
 const getOrdersData = async (req, res) => {
   const { xml_file } = req.files;
-  
+
   if (!xml_file) {
     return res.send(
       error_template({ message: "Please select an invoice XML file." })
     );
   }
-  
+
   try {
     const order = getOrders(xml_file);
     req.session["items_count"] = order.abstract_order_items.length;
-    res.send(order_template(order));
+    const { directors, locations } = await get_admin_data();
+    res.send(order_template(order, directors, locations));
   } catch (error) {
     res.send(error_template({
       message: "Something went wrong!"
@@ -149,13 +173,13 @@ const saveOrder = async (orderData, record_id, date) => {
 const saveOrdersData = async (req, res) => {
   const orderData = req.body;
   const { record_id, date } = req.session.customer;
-  
+
   const order_id = await saveOrder(orderData, record_id, date);
-  
+
   if (order_id === undefined || order_id === null) {
     return res.send(error_template({ message: "Order not saved." }));
   }
-  
+
   try {
     const updated_items_string = updatedItemsString(
       req.session.items_count,
@@ -177,12 +201,11 @@ const saveOrdersData = async (req, res) => {
 
 const commitOrder = async (req, res) => {
   const { id } = req.session.order;
-  try{
+  try {
     const response = await axios.post(ORDER_COMMIT_API, { id });
-    res.status(200).json({redirectUrl : "/"});
-  }catch(err)
-  {
-    res.status(500).json({data: "Something went wrong!"})
+    res.status(200).json({ redirectUrl: "/" });
+  } catch (err) {
+    res.status(500).json({ data: "Something went wrong!" })
   }
 }
 
