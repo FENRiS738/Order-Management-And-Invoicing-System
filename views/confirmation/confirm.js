@@ -81,6 +81,16 @@ const confirm_template = (data) => /*html*/ `
             >
         </div>
         <div class="mb-3">
+            <span class="form-text ms-1">Postal Code</span>
+            <input 
+                type="text" 
+                name="zip" 
+                class="form-control mb-1"
+                value="${data.zip}" 
+                readonly
+            >
+        </div>
+        <div class="mb-3">
             <span class="form-text ms-1">Album</span>
             <input 
                 type="text" 

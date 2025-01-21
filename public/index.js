@@ -38,9 +38,17 @@ function setTarget() {
 async function commitOrder(event) {
   event.preventDefault();
 
+  const requestData = {
+    order_note : document.getElementById("note-textarea").value || ""
+  };
+
   try {
     const response = await fetch("/orders/commit", {
-      method: "POST"
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(requestData)
     });
 
     if (response.status !== 200) {
@@ -49,7 +57,6 @@ async function commitOrder(event) {
     }
 
     let data = await response.json();
-    console.log(data);
     if (data.redirectUrl) {
       alert("Order committed successfully!");
       window.location.href = data.redirectUrl;
@@ -57,7 +64,6 @@ async function commitOrder(event) {
       alert("Failed to commit order!");
     }
   } catch (error) {
-    console.error("An error occurred:", error);
     alert("An unexpected error occurred.");
   }
 }

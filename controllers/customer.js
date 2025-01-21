@@ -63,7 +63,6 @@ const saveCustomerData = async (req, res) => {
 
   customerData['_id'] = customer.record_id
   req.session["customer"] = customerData;
-  console.log(req.session.customer);
   res.send(order_form_template());
 };
 

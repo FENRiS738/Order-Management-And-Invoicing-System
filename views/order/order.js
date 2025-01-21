@@ -1,4 +1,4 @@
-import { item_template } from "../index.js";
+import { item_template, directors_list_template, locations_list_template } from "../index.js";
 
 const order_template = (order, directors, locations) => /*html*/ `
     <div class="mb-3">

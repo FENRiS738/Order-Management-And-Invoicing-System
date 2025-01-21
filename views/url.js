@@ -10,10 +10,11 @@ const url_template = (fullUrl, invoiceViewURL) => /*html*/ `
             <div class="card-header">
                 <h3>Order</h3>
             </div>
-            <div class="card-body">
+            <div class="card-body d-flex flex-column">
                 <p>
                     Please commit this Order.
                 </p>
+                <textarea name="note" rows="10" id="note-textarea" class="w-100 mb-2 p-2" placeholder="Enter order notes here..."></textarea>
                 <button type="button" class="btn btn-primary" onclick="commitOrder(event)">Commit Order</button>
             </div>
         </div>

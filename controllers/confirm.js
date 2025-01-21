@@ -16,9 +16,9 @@ const SAVE_ORDER_API = process.env.SAVE_ORDER_API;
 const getConfirmData = (req, res) => {
   try {
     const { payment_method } = req.body;
-    const { fname, lname, date, address, city, state, director, location } =
+    const { fname, lname, date, address, city, state, zip } =
       req.session.customer;
-    const { album, sub_total, tax, grand_total, items } = req.session.order;
+    const { album, director, location, sub_total, tax, grand_total, items } = req.session.order;
     const combined_fields = {
       fname,
       lname,
@@ -26,6 +26,7 @@ const getConfirmData = (req, res) => {
       date,
       city,
       state,
+      zip,
       album,
       items,
       sub_total,
@@ -54,6 +55,7 @@ const generateDocument = async (confirm_data) => {
       album: confirm_data["album"],
       city: confirm_data["city"],
       state: confirm_data["state"],
+      zip: confirm_data["zip"],
       items: confirm_data["items"],
       sub_total: confirm_data["sub_total"],
       tax: confirm_data["tax"],
@@ -91,7 +93,7 @@ const processConfirmData = async (req, res) => {
   try {
 
     confirm_data["invoice"] = doc_response.pdf_url;
-    await updateOrder(req.session.order.id, confirm_data.payment_method, doc_response.view_url);
+    await updateOrder(req.session.order._id, confirm_data.payment_method, doc_response.view_url);
     let token = generateToken(confirm_data);
 
     const fullUrl = `${req.protocol}://${req.get(

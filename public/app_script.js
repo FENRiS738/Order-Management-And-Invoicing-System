@@ -6,12 +6,13 @@ function formattedData(rawData) {
     address: rawData.address[0],
     city: rawData.city[0],
     state: rawData.state[0],
+    zip: rawData.zip[0],
     items: JSON.parse(rawData.items[0]),
     sub_total: rawData.sub_total[0],
     total_tax: rawData.tax[0],
     grand_total: rawData.grand_total[0],
     payment_method: rawData.payment_method[0],
-    album: rawData.album[0]  // Extracting the album field
+    album: rawData.album[0]
   };
 
   return data;
@@ -78,6 +79,7 @@ function main(data) {
   body.replaceText("{{Address}}", data.address);
   body.replaceText("{{City}}", data.city);
   body.replaceText("{{State}}", data.state);
+  body.replaceText("{{Zip}}", data.zip);
 
   if (data.payment_method === "stripe") {
     body.replaceText("{{Status}}", "Paid");

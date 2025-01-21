@@ -4,11 +4,11 @@ import dotenv from "dotenv";
 import session from "express-session";
 
 import {
-  // confirm_router,
+  confirm_router,
   customer_router,
   order_router,
-  // acknowledge_router,
-  // admin_router,
+  acknowledge_router,
+  admin_router,
 } from "./routes/index.js";
 import { cancel_template, home, success_template, page_not_found_template } from "./views/index.js";
 
@@ -33,10 +33,10 @@ app.use(
 );
 
 app.use("/customers", customer_router);
-// app.use("/orders", order_router);
-// app.use("/confirm", confirm_router);
-// app.use("/acknowledge", acknowledge_router);
-// app.use("/admin", admin_router);
+app.use("/orders", order_router);
+app.use("/confirm", confirm_router);
+app.use("/acknowledge", acknowledge_router);
+app.use("/admin", admin_router);
 
 
 app.get("/", async (req, res) => {
@@ -48,11 +48,10 @@ app.get("/success", (req, res) => res.send(success_template()));
 app.get("/cancel", (req, res) => res.send(cancel_template()));
 
 
-// app.use((req, res) => {
-//   res.status(404).send(page_not_found_template());
-// });
+app.use((req, res) => {
+  res.status(404).send(page_not_found_template());
+});
 
 app.listen(PORT, () => {
   console.log(`App is running at port: ${PORT}`)
 });
-  

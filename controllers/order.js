@@ -165,19 +165,20 @@ const updatedItemsString = (items_count, orderData) => {
   return JSON.stringify(updated_items_string);
 };
 
-const saveOrder = async (orderData, record_id, date) => {
-  const response = await axios.post(SAVE_ORDER_API, { orderData, record_id, date });
-  return response.data.order_id;
+const saveOrder = async (orderData, customer_id, date) => {
+  const response = await axios.post(SAVE_ORDER_API, { orderData, customer_id, date });
+  return response.data;
 };
 
 const saveOrdersData = async (req, res) => {
   const orderData = req.body;
-  const { record_id, date } = req.session.customer;
+  const { _id, date } = req.session.customer;
 
-  const order_id = await saveOrder(orderData, record_id, date);
+  const response = await saveOrder(orderData, _id, date);
 
-  if (order_id === undefined || order_id === null) {
-    return res.send(error_template({ message: "Order not saved." }));
+
+  if (response.success === false) {
+    return res.send(error_template({ message: response.error }));
   }
 
   try {
@@ -186,7 +187,7 @@ const saveOrdersData = async (req, res) => {
       orderData
     );
 
-    orderData["id"] = order_id;
+    orderData["_id"] = response.order_id;
     orderData["items"] = updated_items_string;
     req.session["order"] = orderData;
 
@@ -200,9 +201,10 @@ const saveOrdersData = async (req, res) => {
 
 
 const commitOrder = async (req, res) => {
-  const { id } = req.session.order;
+  const { order_note }  = req.body;
+  const { _id } = req.session.order;
   try {
-    const response = await axios.post(ORDER_COMMIT_API, { id });
+    const response = await axios.post(ORDER_COMMIT_API, { _id, order_note });
     res.status(200).json({ redirectUrl: "/" });
   } catch (err) {
     res.status(500).json({ data: "Something went wrong!" })
