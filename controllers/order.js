@@ -55,15 +55,16 @@ const parseXML = (xml_data) => {
 };
 
 const formatImageNames = (images_list) => {
+  if (!images_list || !images_list.Image_Name) {
+    return " "; // Handle missing images safely
+  }
+  
   let images;
   if (Array.isArray(images_list.Image_Name)) {
     images = images_list.Image_Name.map((image) =>
       image.replace(/\s+/g, " ").trim()
     ).join(", ");
-  } else if (
-    typeof images_list.Image_Name === "string" &&
-    images_list.Image_Name.trim() !== ""
-  ) {
+  } else if (typeof images_list.Image_Name === "string" && images_list.Image_Name.trim() !== "") {
     images = images_list.Image_Name.replace(/\s+/g, " ").trim();
   } else {
     images = " ";
@@ -73,15 +74,17 @@ const formatImageNames = (images_list) => {
 
 const extractData = (order_client) => {
   const album = order_client["Album_Name"];
-  const ordered_items = order_client["Order"]["Ordered_Items"]["Ordered_Item"];
+  const ordered_items = Array.isArray(order_client["Order"]["Ordered_Items"]["Ordered_Item"]) 
+    ? order_client["Order"]["Ordered_Items"]["Ordered_Item"] 
+    : [order_client["Order"]["Ordered_Items"]["Ordered_Item"]];
 
   const abstract_order_items = ordered_items.map((item) => {
     const name = escapeHtml(item["Product_Name"]);
     const description = escapeHtml(item["Description"]);
-    const quantity = item["Quantity"];
+    const quantity = parseInt(item["Quantity"]) || 1; // Ensure quantity is always a number
     const images = formatImageNames(item["Images"]);
-    const tax = item["Tax"];
-    const price = item["Price"];
+    const tax = item["Tax"] ? parseFloat(item["Tax"]) || 0 : 0;
+    const price = parseFloat(item["Price"]) || 0;
     const sub_total = Number(price * quantity);
     const grand_total = sub_total + tax;
     return {
@@ -102,12 +105,14 @@ const extractData = (order_client) => {
       0
     )
   ).toFixed(2);
+
   const order_tax = parseFloat(
     abstract_order_items.reduce(
       (accumulator, item) => accumulator + item["tax"],
       0
     )
   ).toFixed(2);
+
   const order_grand_total = parseFloat(
     abstract_order_items.reduce(
       (accumulator, item) => accumulator + item["grand_total"],
