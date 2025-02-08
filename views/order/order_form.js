@@ -7,6 +7,7 @@ const order_form_template = () => /*html*/ `
         hx-on:submit="document.getElementById('save-order-button').disabled = true; startStoringOrderAnimation(event, document.getElementById('save-order-button'))"
     >
         <div class="mb-3">
+            <span class="form-text mb-1">Order File</span>
             <input
                 type="file"
                 name="xml_file"

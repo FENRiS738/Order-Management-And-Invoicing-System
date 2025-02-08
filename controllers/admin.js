@@ -52,7 +52,6 @@ const addAdminData = async (req, res) => {
 
     res.redirect(`/admin/${id}`);
   } catch (error) {
-    console.error("Error in addAdminData:", error);
     res.status(500).send(
       error_template({ message: "Failed to add data." })
     );
@@ -86,7 +85,6 @@ const getItemData = async (req, res) => {
       error_template({ message: "Item not found." })
     );
   } catch (error) {
-    console.error("Error in getItemData:", error);
     res.status(500).send(
       error_template({ message: "Failed to fetch item data." })
     );
@@ -126,7 +124,6 @@ const deleteItemData = async (req, res) => {
       error_template({ message: "Item not found." })
     );
   } catch (error) {
-    console.error("Error in deleteItemData:", error);
     res.status(500).send(
       error_template({ message: "Failed to delete item." })
     );

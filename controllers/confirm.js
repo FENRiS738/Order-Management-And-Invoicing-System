@@ -2,6 +2,7 @@ import axios from "axios";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 
+import connectToDB from "../data/database.js";
 import {
   confirm_template,
   error_template,
@@ -79,6 +80,13 @@ const updateOrder = async (order_id, payment_method, pdf_url) => {
   return response.data.order_id;
 };
 
+const storeToken = async (token) => {
+  const conn = await connectToDB();
+  const result = await conn.database.collection("tokens").insertOne({token: token});
+  const token_id = result.insertedId.toString();
+  return token_id
+}
+
 const processConfirmData = async (req, res) => {
   const confirm_data = req.body;
   const doc_response = await generateDocument(confirm_data);
@@ -95,10 +103,10 @@ const processConfirmData = async (req, res) => {
     confirm_data["invoice"] = doc_response.pdf_url;
     await updateOrder(req.session.order._id, confirm_data.payment_method, doc_response.view_url);
     let token = generateToken(confirm_data);
-
+    let token_id = await storeToken(token)
     const fullUrl = `${req.protocol}://${req.get(
       "host"
-    )}/acknowledge?token=${encodeURIComponent(token)}`;
+    )}/acknowledge?q=${encodeURIComponent(token_id)}`;
     res.send(url_template(fullUrl, doc_response.view_url));
   } catch (error) {
     res.send(error_template({

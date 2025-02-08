@@ -1,5 +1,6 @@
 const item_template = (item, index) => /*html*/`
     <div class="border rounded-3 bg-light p-2 mb-3">
+        <span class="form-text mb-1">Item: ${index + 1}</span>
         <input
             type="text"
             name="product_${index + 1}"

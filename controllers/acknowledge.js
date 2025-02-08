@@ -1,6 +1,9 @@
 import dotenv from "dotenv";
 import Stripe from "stripe";
 import jwt from "jsonwebtoken";
+import { ObjectId } from "mongodb";
+
+import connectToDB from "../data/database.js";
 import { acknowledge_template } from "../views/index.js";
 
 dotenv.config();
@@ -13,7 +16,6 @@ const verifyToken = (token) => {
 };
 
 const stripeCheckout = async (req, product_name, amount, metadata) => {
-  console.log(metadata)
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card", "affirm"],
     line_items: [
@@ -33,7 +35,6 @@ const stripeCheckout = async (req, product_name, amount, metadata) => {
       metadata,
     },
   });
-  console.log(session.metadata)
   return session.url;
 };
 
@@ -49,8 +50,17 @@ const partiallyCheckout = (director_name, location, amount) => {
   return partially_uri;
 };
 
-const getAcknowledgeData = (req, res) => {
-  const { token } = req.query;
+
+const getTokenById = async (id) => {
+  const conn = await connectToDB();
+  const objectId = new ObjectId(id);
+  const result = await conn.database.collection("tokens").findOne({ _id: objectId });
+  return result.token;
+};
+
+const getAcknowledgeData = async (req, res) => {
+  const { q } = req.query;
+  const token = await getTokenById(q)
   const {
     album,
     fname,
