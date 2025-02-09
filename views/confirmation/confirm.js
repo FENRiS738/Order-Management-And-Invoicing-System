@@ -1,5 +1,5 @@
 const confirm_template = (data) => /*html*/ `
-    <div class="mb-3">
+    <div class="border rounded-3 bg-light p-2 mb-3">
         <div class="mb-3">
             <span class="form-text ms-1">First Name</span>
             <input 

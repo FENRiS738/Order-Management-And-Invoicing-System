@@ -5,7 +5,7 @@ const get_customer_template = () => /*html*/ `
         hx-swap="outerHTML"
         hx-on:submit="document.getElementById('get-contact-button').disabled = true; startFetchingAnimation(event, document.getElementById('get-contact-button'))"
     >
-        <div class="mb-3">
+        <div class="border rounded-3 bg-light p-2 mb-3">
             <span class="form-text mb-1">Customer ID</span>
             <input
                 type="text"
