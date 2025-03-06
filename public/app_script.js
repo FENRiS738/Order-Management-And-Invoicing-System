@@ -114,6 +114,10 @@ function main(data) {
   // Format table columns
   formatTableColumns(table);
 
+  body.replaceText("{{Signature Date}}", data.date);
+  body.replaceText("{{Signature First Name}}", data.fname);
+  body.replaceText("{{Signature Last Name}}", data.lname);
+
   openDoc.saveAndClose();
 
   // Convert the document to PDF

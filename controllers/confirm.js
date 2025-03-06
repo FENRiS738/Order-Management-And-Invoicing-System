@@ -82,7 +82,7 @@ const updateOrder = async (order_id, payment_method, pdf_url) => {
 
 const storeToken = async (token) => {
   const conn = await connectToDB();
-  const result = await conn.database.collection("tokens").insertOne({token: token});
+  const result = await conn.database.collection("tokens").insertOne({ token: token });
   const token_id = result.insertedId.toString();
   return token_id
 }
