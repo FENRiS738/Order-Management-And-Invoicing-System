@@ -7,10 +7,33 @@ import {
   order_template,
 } from "../views/index.js";
 
+import connectToDB from "../data/database.js";
+import { readData } from "../controllers/admin.js";
+
+
 dotenv.config();
 
 const SAVE_ORDER_API = process.env.SAVE_ORDER_API;
 const ORDER_COMMIT_API = process.env.ORDER_COMMIT_API;;
+
+
+const get_admin_data = async () => {
+  const conn = await connectToDB();
+
+  if (!conn.success) {
+    return res.send(
+      error_template({ message: conn.message })
+    );
+  }
+
+  const directors = await readData(conn, "directors");
+  const locations = await readData(conn, "locations");
+
+  return {
+    directors,
+    locations
+  }
+}
 
 const escapeHtml = (str) => {
   return str.replace(/[&<>"']/g, (match) => {
@@ -32,15 +55,16 @@ const parseXML = (xml_data) => {
 };
 
 const formatImageNames = (images_list) => {
+  if (!images_list || !images_list.Image_Name) {
+    return " "; // Handle missing images safely
+  }
+  
   let images;
   if (Array.isArray(images_list.Image_Name)) {
     images = images_list.Image_Name.map((image) =>
       image.replace(/\s+/g, " ").trim()
     ).join(", ");
-  } else if (
-    typeof images_list.Image_Name === "string" &&
-    images_list.Image_Name.trim() !== ""
-  ) {
+  } else if (typeof images_list.Image_Name === "string" && images_list.Image_Name.trim() !== "") {
     images = images_list.Image_Name.replace(/\s+/g, " ").trim();
   } else {
     images = " ";
@@ -50,15 +74,17 @@ const formatImageNames = (images_list) => {
 
 const extractData = (order_client) => {
   const album = order_client["Album_Name"];
-  const ordered_items = order_client["Order"]["Ordered_Items"]["Ordered_Item"];
+  const ordered_items = Array.isArray(order_client["Order"]["Ordered_Items"]["Ordered_Item"]) 
+    ? order_client["Order"]["Ordered_Items"]["Ordered_Item"] 
+    : [order_client["Order"]["Ordered_Items"]["Ordered_Item"]];
 
   const abstract_order_items = ordered_items.map((item) => {
     const name = escapeHtml(item["Product_Name"]);
     const description = escapeHtml(item["Description"]);
-    const quantity = item["Quantity"];
+    const quantity = parseInt(item["Quantity"]) || 1; // Ensure quantity is always a number
     const images = formatImageNames(item["Images"]);
-    const tax = item["Tax"];
-    const price = item["Price"];
+    const tax = item["Tax"] ? parseFloat(item["Tax"]) || 0 : 0;
+    const price = parseFloat(item["Price"]) || 0;
     const sub_total = Number(price * quantity);
     const grand_total = sub_total + tax;
     return {
@@ -79,12 +105,14 @@ const extractData = (order_client) => {
       0
     )
   ).toFixed(2);
+
   const order_tax = parseFloat(
     abstract_order_items.reduce(
       (accumulator, item) => accumulator + item["tax"],
       0
     )
   ).toFixed(2);
+
   const order_grand_total = parseFloat(
     abstract_order_items.reduce(
       (accumulator, item) => accumulator + item["grand_total"],
@@ -109,17 +137,18 @@ const getOrders = (xml_file) => {
 
 const getOrdersData = async (req, res) => {
   const { xml_file } = req.files;
-  
+
   if (!xml_file) {
     return res.send(
       error_template({ message: "Please select an invoice XML file." })
     );
   }
-  
+
   try {
     const order = getOrders(xml_file);
     req.session["items_count"] = order.abstract_order_items.length;
-    res.send(order_template(order));
+    const { directors, locations } = await get_admin_data();
+    res.send(order_template(order, directors, locations));
   } catch (error) {
     res.send(error_template({
       message: "Something went wrong!"
@@ -141,28 +170,29 @@ const updatedItemsString = (items_count, orderData) => {
   return JSON.stringify(updated_items_string);
 };
 
-const saveOrder = async (orderData, record_id, date) => {
-  const response = await axios.post(SAVE_ORDER_API, { orderData, record_id, date });
-  return response.data.order_id;
+const saveOrder = async (orderData, customer_id, date) => {
+  const response = await axios.post(SAVE_ORDER_API, { orderData, customer_id, date });
+  return response.data;
 };
 
 const saveOrdersData = async (req, res) => {
   const orderData = req.body;
-  const { record_id, date } = req.session.customer;
-  
-  const order_id = await saveOrder(orderData, record_id, date);
-  
-  if (order_id === undefined || order_id === null) {
-    return res.send(error_template({ message: "Order not saved." }));
+  const { _id, date } = req.session.customer;
+
+  const response = await saveOrder(orderData, _id, date);
+
+
+  if (response.success === false) {
+    return res.send(error_template({ message: response.error }));
   }
-  
+
   try {
     const updated_items_string = updatedItemsString(
       req.session.items_count,
       orderData
     );
 
-    orderData["id"] = order_id;
+    orderData["_id"] = response.order_id;
     orderData["items"] = updated_items_string;
     req.session["order"] = orderData;
 
@@ -176,13 +206,13 @@ const saveOrdersData = async (req, res) => {
 
 
 const commitOrder = async (req, res) => {
-  const { id } = req.session.order;
-  try{
-    const response = await axios.post(ORDER_COMMIT_API, { id });
-    res.status(200).json({redirectUrl : "/"});
-  }catch(err)
-  {
-    res.status(500).json({data: "Something went wrong!"})
+  const { order_note }  = req.body;
+  const { _id } = req.session.order;
+  try {
+    const response = await axios.post(ORDER_COMMIT_API, { _id, order_note });
+    res.status(200).json({ redirectUrl: "/" });
+  } catch (err) {
+    res.status(500).json({ data: "Something went wrong!" })
   }
 }
 

@@ -1,11 +1,9 @@
-import { item_template } from "../index.js";
+import { item_template, directors_list_template, locations_list_template } from "../index.js";
 
-const order_template = (order) => /*html*/ `
+const order_template = (order, directors, locations) => /*html*/ `
     <div class="mb-3">
         <div class="mb-3">
-            <label for="album" class="form-label mb-0">
-                Album
-            </label>
+            <span class="form-text mb-1">Album Name</span>
             <input
                 type="text"
                 name="album"
@@ -16,11 +14,15 @@ const order_template = (order) => /*html*/ `
                 required
             />
         </div>
+        <div class="mb-3">
+          ${directors_list_template(directors)}
+        </div>
+        <div class="mb-3">
+            ${locations_list_template(locations)}
+        </div>
         ${order.abstract_order_items.map((item, index) => item_template(item, index)).join("")}
         <div class="mb-3">
-            <label for="sub_total" class="form-label mb-0">
-                Sub Total
-            </label>
+            <span class="form-text mb-1">Sub Total</span>
             <input
                 type="number"
                 name="sub_total"
@@ -33,9 +35,7 @@ const order_template = (order) => /*html*/ `
             />
         </div>
         <div class="mb-3">
-            <label for="tax" class="form-label mb-0">
-                Tax
-            </label>
+            <span class="form-text mb-1">Tax</span>
             <input
                 type="number"
                 name="tax"
@@ -48,9 +48,7 @@ const order_template = (order) => /*html*/ `
             />
         </div>
         <div class="mb-3">
-            <label for="grand_total" class="form-label mb-0">
-                Grand Total
-            </label>
+            <span class="form-text mb-1">Grand Total</span>
             <input
                 type="number"
                 name="grand_total"

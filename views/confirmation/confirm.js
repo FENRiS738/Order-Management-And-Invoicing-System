@@ -1,5 +1,5 @@
 const confirm_template = (data) => /*html*/ `
-    <div class="mb-3">
+    <div class="border rounded-3 bg-light p-2 mb-3">
         <div class="mb-3">
             <span class="form-text ms-1">First Name</span>
             <input 
@@ -77,6 +77,16 @@ const confirm_template = (data) => /*html*/ `
                 name="state" 
                 class="form-control mb-1"
                 value="${data.state}" 
+                readonly
+            >
+        </div>
+        <div class="mb-3">
+            <span class="form-text ms-1">Postal Code</span>
+            <input 
+                type="text" 
+                name="zip" 
+                class="form-control mb-1"
+                value="${data.zip}" 
                 readonly
             >
         </div>

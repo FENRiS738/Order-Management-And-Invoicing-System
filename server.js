@@ -55,4 +55,3 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`App is running at port: ${PORT}`)
 });
-  

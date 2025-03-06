@@ -1,6 +1,6 @@
 const confirm_form_template = () => /*html*/ `
     <form class="custom-form">
-        <div class="mb-3">
+        <div class="border rounded-3 bg-light p-2 mb-3">
             <select
                 class="form-select" 
                 name="payment_method"
