@@ -36,7 +36,7 @@ const confirm_template = (data) => /*html*/ `
                 type="text" 
                 name="location" 
                 class="form-control mb-1"
-                value="${data.location}" 
+                value="${data.studio_location}" 
                 readonly
             >
         </div>

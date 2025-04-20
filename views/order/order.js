@@ -1,6 +1,6 @@
-import { item_template, directors_list_template, locations_list_template } from "../index.js";
+import { item_template, directors_list_template } from "../index.js";
 
-const order_template = (order, directors, locations) => /*html*/ `
+const order_template = (order, directors) => /*html*/ `
     <div class="mb-3">
         <div class="mb-3">
             <span class="form-text mb-1">Album Name</span>
@@ -16,9 +16,6 @@ const order_template = (order, directors, locations) => /*html*/ `
         </div>
         <div class="mb-3">
           ${directors_list_template(directors)}
-        </div>
-        <div class="mb-3">
-            ${locations_list_template(locations)}
         </div>
         ${order.abstract_order_items.map((item, index) => item_template(item, index)).join("")}
         <div class="mb-3">

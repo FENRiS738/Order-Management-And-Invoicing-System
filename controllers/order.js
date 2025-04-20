@@ -27,11 +27,9 @@ const get_admin_data = async () => {
   }
 
   const directors = await readData(conn, "directors");
-  const locations = await readData(conn, "locations");
 
   return {
-    directors,
-    locations
+    directors
   }
 }
 
@@ -147,8 +145,8 @@ const getOrdersData = async (req, res) => {
   try {
     const order = getOrders(xml_file);
     req.session["items_count"] = order.abstract_order_items.length;
-    const { directors, locations } = await get_admin_data();
-    res.send(order_template(order, directors, locations));
+    const { directors } = await get_admin_data();
+    res.send(order_template(order, directors));
   } catch (error) {
     res.send(error_template({
       message: "Something went wrong!"

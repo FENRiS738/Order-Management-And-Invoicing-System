@@ -3,7 +3,7 @@ import {
 } from "../index.js";
 
 
-const customer_template = (customer, directors, locations) => /*html*/ `
+const customer_template = (customer) => /*html*/ `
     <form 
         class="custom-form"
         hx-post="/customers/submit" 
@@ -12,8 +12,8 @@ const customer_template = (customer, directors, locations) => /*html*/ `
     >
         <div class="mb-3 border bg-light rounded-2 p-2">
 
-          ${date_template()}
-          <span class="ms-1 form-text">Customer ID</span>
+        ${date_template()}
+        <span class="ms-1 form-text">Customer ID</span>
         <input
           type="text"
           name="customer_id"
@@ -94,6 +94,15 @@ const customer_template = (customer, directors, locations) => /*html*/ `
           value="${customer.shipping_zip}"
           class="form-control"
           placeholder="Enter Zip Code"
+          required
+        />
+        <span class="ms-1 form-text">Studio Location</span>
+        <input
+          type="text"
+          name="studio_location"
+          value="${customer.studio_location}"
+          class="form-control mb-2"
+          placeholder="Enter State"
           required
         />
       </div>

@@ -17,9 +17,9 @@ const SAVE_ORDER_API = process.env.SAVE_ORDER_API;
 const getConfirmData = (req, res) => {
   try {
     const { payment_method } = req.body;
-    const { fname, lname, date, address, city, state, zip } =
+    const { fname, lname, date, address, city, state, zip, studio_location } =
       req.session.customer;
-    const { album, director, location, sub_total, tax, grand_total, items } = req.session.order;
+    const { album, director, sub_total, tax, grand_total, items } = req.session.order;
     const combined_fields = {
       fname,
       lname,
@@ -34,7 +34,7 @@ const getConfirmData = (req, res) => {
       tax,
       grand_total,
       director,
-      location,
+      studio_location,
       payment_method,
     };
 

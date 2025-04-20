@@ -3,8 +3,6 @@ import date_template from './customer/date.js';
 import director_template from './order/director.js';
 import directors_list_template from './order/directors_list.js';
 import home from './home.js';
-import location_template from './order/location.js';
-import locations_list_template from './order/locations_list.js';
 import order_form_template from './order/order_form.js';
 import error_template from './error.js';
 import order_template from './order/order.js';
@@ -28,9 +26,7 @@ import get_customer_template from './customer/get_customer.js';
 export { 
     home, 
     director_template, 
-    directors_list_template, 
-    location_template, 
-    locations_list_template, 
+    directors_list_template,
     date_template,
     get_customer_template,
     customer_template, 
